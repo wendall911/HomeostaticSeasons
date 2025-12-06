@@ -7,27 +7,49 @@
 ## Description
 
 Homeostatic Seasons adds the four traditional seasons to Minecraft, each
-comprised of three distinct subseasons, for a total of twelve distinct
-subseasons. Each subseason has its own visual changes, with mid-spring
-biomes matching the default state in Vanilla Minecraft.
+comprised of three distinct sub-seasons, for a total of twelve sub-seasons.
+Each sub-season has its own visual, weather and temperature changes.
 
-The duration of each subseason is 3 in-game days (configurable), resulting in
-9-day seasons. The current season is defined by the world time (using /time set
-0 will reset to day 1 of early-spring).
+The duration of each sub-season is three in-game days (configurable), resulting
+in 9-day seasons. The current season is defined by the world time; using /time
+set 0 will reset to day 1 of early spring. There is a /season command to check
+the current season and sub-season, as well as skipping or setting the season or
+sub-season. There is a robust configuration to customize the mod to your liking.
+
+[Homeostatic](https://github.com/wendall911/Homeostatic) is not a required
+dependency unless players want to experience temperature and thirst in-game.
+But it is highly recommended to use
+[Homeostatic](https://github.com/wendall911/Homeostatic) alongside Homeostatic
+Seasons for the full experience.
+
+## What is different about this mod?
+
+Homeostatic Seasons is focused on performance and compatibility from the start.
+The design should allow for easy compatibility with other mods and should not
+cause significant performance issues. Homeostatic Seasons does not add any new
+blocks or items, and only modifies existing game mechanics.
+
+Additionally, the mod is highly configurable, allowing players to tailor the
+experience to their preferences. Players can adjust the length of seasons, the
+intensity of weather effects, and other aspects of the mod.
+
+Snow and ice accumulation are handled so as not to cause significant
+performance issues, even in large worlds. The mod uses a chunk-based system to
+track snow accumulation, updating only loaded, visible chunks to the player.
+Plants and other blocks that are affected by snow accumulation are replaced
+with snow, then will revert to their original state when the snow melts.
+
+Temperature is calculated on a per-block basis, accounting for surrounding
+biomes, altitude, and the current season. This allows for a more realistic
+temperature system that is affected by the environment. Biomes can experience a
+mixture of snow and rain simultaneously, depending on the temperature of the
+blocks in the area.
 
 ## Seasonal Biomes
 
-Biomes have different temperatures that are managed differently from those set
-in Vanilla Minecraft or other biome-related mods. This is because temperature
-values are very arbitrarily set in nearly all situations, as temperature is not
-well utilized or defined within the existing temperature framework. To account
-for this, a separate climate settings system, based on the excellent
-Homeostatic mod, is used. Homeostatic is not a required dependency unless
-players want to experience temperature and thirst in-game.
-
 Biomes will have different colors and other visual features according to the
 current season. This is a purely visual change and will not affect your game
-performance in any way. Additionally, shaders are fully supported.
+performance. Additionally, shaders are fully supported.
 
 Non-vanilla biomes from the major biome mods are fully supported. If the custom
 biome cannot be determined, it will behave as a neutral biome, with seasonal
@@ -36,16 +58,19 @@ can be fully supported.
 
 ### Seasonal Weather
 
-- Cold Biomes will have rain in the summer
-- Temperate Biomes will have snow in the winter
-- Tropical Biomes will have a steady season all year round
-- Hot Biomes will have a rainy season in the winter
-
-Depending on the original temperature/precipitation of the biome, this behavior can change.
-
+The weather will change according to the current season. In spring, rain is
+more frequent, while in summer, thunderstorms are more common. In autumn, rain
+becomes more frequent again, while in winter, snow is the predominant form of
+precipitation in cold areas. The intensity and duration of weather events can
+be configured to suit player preferences. Temperate biomes, such as
+rainforests, deserts and swamps, will experience a rainy season from mid-autumn
+to late winter. So, yes, you could experience snow and rain in a desert biome
+during winter!
 
 ## Links of Interest
 
 + [HomeostaticSeasons Wiki](https://github.com/wendall911/HomeostaticSeasons/wiki)
 + [HomeostaticSeasons Curseforge Page](https://www.curseforge.com/minecraft/mc-mods/homeostatic-seasons)
 + [HomeostaticSeasons Modrinth Page](https://modrinth.com/mod/homeostatic-seasons)
++ [Homeostatic Curseforge Page](https://www.curseforge.com/minecraft/mc-mods/homeostatic)
++ [Homeostatic Modrinth Page](https://modrinth.com/mod/homeostatic)
