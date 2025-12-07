@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 
 import homeostaticseasons.common.biome.BiomeTemperature;
-import homeostaticseasons.config.ConfigHandler;
 
 public class SeasonWeather {
 
@@ -162,7 +161,7 @@ public class SeasonWeather {
     }
 
     public static boolean isValid(Level level) {
-        return ConfigHandler.Common.isValidDimension(level.dimension());
+        return HomeostaticSeasonsAPI.isSeasonalDimension(level.dimension());
     }
 
     public static BiomeTemperature getBiomeTemperature(Biome biome, Level level, BlockPos pos) {

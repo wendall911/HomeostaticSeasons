@@ -10,8 +10,6 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -43,9 +41,6 @@ public class ConfigHandler {
         COMMON = specPairCommon.getLeft();
     }
 
-    public static void initClient() {
-    }
-
     public static void initCommon() {
         Common.seasonLengths = new SeasonLengths(
             COMMON.earlySpringDaysLength.get(),
@@ -64,13 +59,13 @@ public class ConfigHandler {
 
         // Initialize season map
         Common.seasonMap.clear();
-        Season startingSeason = Common.startingSeason();
+        Season startingSeason = Season.EARLY_SPRING;
 
-        for (int i = startingSeason.ordinal(); i < Season.values().length; i++) {
+        for (int i = 0; i < Season.values().length; i++) {
             Season season = Season.values()[i];
             long cumulativeLength = 0L;
 
-            for (int j = startingSeason.ordinal(); j <= i; j++) {
+            for (int j = 0; j <= i; j++) {
                 cumulativeLength += Season.values()[j].getSeasonLength();
             }
 
@@ -149,6 +144,7 @@ public class ConfigHandler {
         private final WhiteNoiseConfigSpec.LongValue midWinterDaysLength;
         private final WhiteNoiseConfigSpec.LongValue lateWinterDaysLength;
         private final WhiteNoiseConfigSpec.BooleanValue seasonalSnowReplaceVegetation;
+        private final WhiteNoiseConfigSpec.IntValue snowAccumulationHeight;
 
         Common(WhiteNoiseConfigSpec.Builder builder) {
             builder.push("seasons").comment(getTranslation("seasons"));
@@ -212,6 +208,10 @@ public class ConfigHandler {
             seasonalSnowReplaceVegetation = builder
                 .comment(getTranslation("seasonalsnowreplacevegetation"))
                 .define("seasonalSnowReplaceVegetation", true);
+
+            snowAccumulationHeight = builder
+                .comment(getTranslation("snowaccumulationheight"))
+                .defineInRange("snowAccumulationHeight", 1, 1, 8);
 
             builder.pop(); // weather
         }
@@ -341,6 +341,10 @@ public class ConfigHandler {
 
         public static boolean seasonalSnowReplaceVegetation() {
             return COMMON.seasonalSnowReplaceVegetation.get();
+        }
+
+        public static int snowAccumulationHeight() {
+            return COMMON.snowAccumulationHeight.get();
         }
 
     }

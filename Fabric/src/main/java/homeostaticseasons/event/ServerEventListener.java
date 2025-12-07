@@ -3,6 +3,7 @@ package homeostaticseasons.event;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 
 import climatesettings.common.biome.BiomeCategoryManager;
 import climatesettings.common.biome.BiomeTypeDataManager;
@@ -26,6 +27,10 @@ public class ServerEventListener {
             BiomeTypeDataManager.syncWithClient(player);
             BiomeCategoryManager.syncWithClient(player);
             BiomeColormapManager.syncWithClient(player);
+        });
+
+        ServerWorldEvents.LOAD.register((server, level) -> {
+            ServerEventHandler.onLevelLoad(level);
         });
     }
 

@@ -39,7 +39,10 @@ public class Translations {
         translations.put("fixedseason.title", "Fixed Season");
         translations.put("fixedseason", "The season that is always active when the season change method is set to Fixed.");
         translations.put("startingseason.title", "Starting Season");
-        translations.put("startingseason", "The season that is active when a world is created.");
+        translations.put("startingseason", joiner(
+            "The season that is active when a world is created.",
+            "Only used when the season change method is set to Configured."
+        ));
         translations.put("earlyspringdayslength.title", "Early Spring Subseason Length");
         translations.put("earlyspringdayslength", "The length of Early Spring subseason in Minecraft days.");
         translations.put("midspringdayslength.title", "Mid Spring Subseason Length");
@@ -70,6 +73,11 @@ public class Translations {
         translations.put("seasonalsnowreplacevegetation", joiner(
             "Whether or not snow layers placed by seasonal snow replace vegetation such as tall grass and flowers.",
             "Disable this if you want seasonal snow to behave like normal snow."
+        ));
+        translations.put("snowaccumulationheight.title", "Snow Accumulation Height");
+        translations.put("snowaccumulationheight", joiner(
+            "The maximum height of snow layers that can accumulate due to seasonal snow.",
+            "This effectively sets the gamerule 'snowAccumulationHeight' for seasonal snow."
         ));
     }
 

@@ -3,16 +3,22 @@ package homeostaticseasons.event;
 import net.minecraft.server.level.ServerLevel;
 
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.storage.ServerLevelData;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
 import climatesettings.common.biome.BiomeCategoryManager;
 import climatesettings.common.biome.BiomeTypeDataManager;
+import homeostaticseasons.api.HomeostaticSeasonsAPI;
+import homeostaticseasons.api.Season;
 import homeostaticseasons.common.biome.BiomeColormapManager;
+import homeostaticseasons.config.ConfigHandler;
+import homeostaticseasons.platform.Services;
 
 public class ServerEventListener {
 
@@ -51,6 +57,13 @@ public class ServerEventListener {
             BiomeTypeDataManager.syncWithClient(player);
             BiomeCategoryManager.syncWithClient(player);
             BiomeColormapManager.syncWithClient(player);
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void onLevelLoad(LevelEvent.Load event) {
+        if (event.getLevel() instanceof ServerLevel level) {
+            ServerEventHandler.onLevelLoad(level);
         }
     }
 

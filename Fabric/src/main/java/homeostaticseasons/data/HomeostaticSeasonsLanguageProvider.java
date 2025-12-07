@@ -47,6 +47,7 @@ public class HomeostaticSeasonsLanguageProvider extends FabricLanguageProvider {
         addConfigTranslation(translationBuilder, "latewinterdayslength");
         addConfigTranslation(translationBuilder, "weather");
         addConfigTranslation(translationBuilder, "seasonalsnowreplacevegetation");
+        addConfigTranslation(translationBuilder, "snowaccumulationheight");
 
         addSeasonTranslations(translationBuilder);
     }
