@@ -11,10 +11,13 @@ comprised of three distinct sub-seasons, for a total of twelve sub-seasons.
 Each sub-season has its own visual, weather and temperature changes.
 
 The duration of each sub-season is three in-game days (configurable), resulting
-in 9-day seasons. The current season is defined by the world time; using /time
-set 0 will reset to day 1 of early spring. There is a /season command to check
-the current season and sub-season, as well as skipping or setting the season or
-sub-season. There is a robust configuration to customize the mod to your liking.
+in 9-day seasons. The current season is defined by the
+[Gametime](https://minecraft.wiki/w/Commands/time); using /season set
+EARLY_SPRING will reset to day 1 of early spring and set the Gametime to 0.
+The /season command can be used to check the current sub-season, skip to a
+specific sub-season or set a specific sub-season.
+
+There is a robust configuration to customize the mod to your liking.
 
 [Homeostatic](https://github.com/wendall911/Homeostatic) is not a required
 dependency unless players want to experience temperature and thirst in-game.
