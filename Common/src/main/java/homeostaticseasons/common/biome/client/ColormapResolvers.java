@@ -12,6 +12,7 @@ import homeostaticseasons.api.Season;
 import homeostaticseasons.common.biome.BiomeColormap;
 import homeostaticseasons.common.biome.BiomeColormapManager;
 import homeostaticseasons.config.ConfigHandler;
+import homeostaticseasons.util.ColorHelper;
 import homeostaticseasons.util.RegistryHelper;
 
 public class ColormapResolvers {
@@ -55,13 +56,27 @@ public class ColormapResolvers {
                     biomeHolder,
                     currentSeason
                 );
+                BiomeColormap nextSeasonBiomeColormap = BiomeColormapManager.getColormap(
+                    biomeHolder,
+                    HomeostaticSeasonsAPI.getNextSeason(level, currentSeason)
+                );
 
-                if (biomeColormap != null) {
+                if (biomeColormap != null && nextSeasonBiomeColormap != null) {
+                    long seasonLength = currentSeason.getSeasonLength();
+                    long timeUntilNextSeason = HomeostaticSeasonsAPI.getTimeUntilNextSeason(level);
                     if (type == ColormapType.GRASS) {
-                        return biomeColormap.getGrassColor(originalColor, biomeHolder);
+                        return ColorHelper.mix(
+                            biomeColormap.getGrassColor(originalColor, biomeHolder),
+                            nextSeasonBiomeColormap.getGrassColor(originalColor, biomeHolder),
+                            timeUntilNextSeason / (float) seasonLength
+                        );
                     }
                     else {
-                        return biomeColormap.getFoliageColor(originalColor, biomeHolder);
+                        return ColorHelper.mix(
+                            biomeColormap.getFoliageColor(originalColor, biomeHolder),
+                            nextSeasonBiomeColormap.getFoliageColor(originalColor, biomeHolder),
+                            timeUntilNextSeason / (float) seasonLength
+                        );
                     }
                 }
             }

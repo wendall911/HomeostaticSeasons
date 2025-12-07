@@ -2,7 +2,7 @@
   "type": "homeostaticseasons:mid_spring_normal",
   "birch_color": 7254658,
   "foliage_color": 5211567,
-  "foliage_saturation": -1.0,
-  "grass_color": 6783640,
-  "grass_saturation": -1.0
+  "foliage_saturation": 0.9,
+  "grass_color": 5216943,
+  "grass_saturation": 0.9
 }

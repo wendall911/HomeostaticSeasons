@@ -30,18 +30,18 @@ public class BiomeColormapDataProvider implements DataProvider {
         /*
          * Colormaps for NORMAL biomes
          */
-        add(HomeostaticSeasons.prefix("early_spring_normal"), 0x778086, 0.85F, 0x6F817F, 0.85F, 0x869A68);
-        add(HomeostaticSeasons.prefix("mid_spring_normal"), 0x678298, 0x4F85AF, 0x6EB282);
-        add(HomeostaticSeasons.prefix("late_spring_normal"), 0x6F819F, 0x5F859F, 0x74AE74);
-        add(HomeostaticSeasons.prefix("early_summer_normal"), 0x778088, 0x6F828F, 0x7AAA63);
+        add(HomeostaticSeasons.prefix("early_spring_normal"), 0x6F937F, 0.75F, 0x6F817F, 0.75F, 0x869A68);
+        add(HomeostaticSeasons.prefix("mid_spring_normal"), 0x4F9AAF, 0.9F, 0x4F85AF, 0.9F, 0x6EB282);
+        add(HomeostaticSeasons.prefix("late_spring_normal"), 0x5F9A9F, 0x5F859F, 0x74AE74);
+        add(HomeostaticSeasons.prefix("early_summer_normal"), 0x6F968F, 0x6F828F, 0x7AAA63);
         add(HomeostaticSeasons.prefix("mid_summer_normal"), 0xFFFFFF, 0xFFFFFF, 0x80A756);
-        add(HomeostaticSeasons.prefix("late_summer_normal"), 0x877778, 0x9F5F4F, 0x98A549);
-        add(HomeostaticSeasons.prefix("early_autumn_normal"), 0x8F6F5F, 0xC44041, 0xB1A441);
-        add(HomeostaticSeasons.prefix("mid_autumn_normal"), 0x9F5F4F, 0xEF2122, 0xE2A232);
-        add(HomeostaticSeasons.prefix("late_autumn_normal"), 0xAF4F5F, 0.85F, 0xDB3031, 0.85F, 0xC98A34);
-        add(HomeostaticSeasons.prefix("early_winter_normal"), 0xAF4F5F, 0.6F, 0xDB3031, 0.6F, 0xB17237);
-        add(HomeostaticSeasons.prefix("mid_winter_normal"), 0xAF4F5F, 0.45F, 0xDB3031, 0.45F, 0xA08241);
-        add(HomeostaticSeasons.prefix("late_winter_normal"), 0x8E8180, 0.6F, 0xA57071, 0.6F, 0x8F926F);
+        add(HomeostaticSeasons.prefix("late_summer_normal"), 0x9F714F, 0x9F5F4F, 0x98A549);
+        add(HomeostaticSeasons.prefix("early_autumn_normal"), 0xC45441, 0xC44041, 0xB1A441);
+        add(HomeostaticSeasons.prefix("mid_autumn_normal"), 0xEF3522, 0xEF2122, 0xE2A232);
+        add(HomeostaticSeasons.prefix("late_autumn_normal"), 0xF52E1B, 0.85F, 0xF51A1B, 0.85F, 0xE8A42B);
+        add(HomeostaticSeasons.prefix("early_winter_normal"), 0xFA2815, 0.6F, 0XFA1415, 0.6F, 0xF0A624);
+        add(HomeostaticSeasons.prefix("mid_winter_normal"), 0xF91E0B, 0.45F, 0XF90A0B, 0.45F, 0xF5A417);
+        add(HomeostaticSeasons.prefix("late_winter_normal"), 0xFE1603, 0.6F, 0XFE0203, 0.6F, 0XFDA203);
 
         /*
          * Colormaps for TEMPERATE biomes

@@ -15,9 +15,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import technology.roughness.whitenoise.platform.Services;
 
 import homeostaticseasons.api.HomeostaticSeasonsAPI;
+import homeostaticseasons.api.Season;
 import homeostaticseasons.common.biome.BiomeColormap;
 import homeostaticseasons.common.biome.BiomeColormapManager;
 import homeostaticseasons.config.ConfigHandler;
+import homeostaticseasons.util.ColorHelper;
 
 @Mixin(FoliageColor.class)
 public class FoliageColorMixin {
@@ -32,13 +34,24 @@ public class FoliageColorMixin {
 
             if (player != null && level != null) {
                 Holder<Biome> biomeHolder = level.getBiome(player.blockPosition());
+                Season currentSeason = HomeostaticSeasonsAPI.getCurrentSeason(level);
                 BiomeColormap biomeColormap = BiomeColormapManager.getColormap(
                     biomeHolder,
-                    HomeostaticSeasonsAPI.getCurrentSeason(level)
+                    currentSeason
+                );
+                BiomeColormap nextSeasonBiomeColormap = BiomeColormapManager.getColormap(
+                    biomeHolder,
+                    HomeostaticSeasonsAPI.getNextSeason(level, currentSeason)
                 );
 
-                if (biomeColormap != null) {
-                    int newColor = biomeColormap.getBirchColor(originalColor, biomeHolder);
+                if (biomeColormap != null && nextSeasonBiomeColormap != null) {
+                    long seasonLength = currentSeason.getSeasonLength();
+                    long timeUntilNextSeason = HomeostaticSeasonsAPI.getTimeUntilNextSeason(level);
+                    int newColor = ColorHelper.mix(
+                        biomeColormap.getBirchColor(originalColor, biomeHolder),
+                        nextSeasonBiomeColormap.getBirchColor(originalColor, biomeHolder),
+                        timeUntilNextSeason / (float) seasonLength
+                    );
 
                     if (newColor != originalColor) {
                         cir.setReturnValue(newColor);
