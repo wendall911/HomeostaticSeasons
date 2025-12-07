@@ -63,6 +63,15 @@ public class BiomeTemperature {
     }
 
     public float getAirTemperature() {
+        try {
+            return getAirTemperatureRaw();
+        }
+        catch (NullPointerException e) {
+            return BiomeTypeData.MC_DEGREE * 70; // Default to 70F on error
+        }
+    }
+
+    private float getAirTemperatureRaw() {
         if (!Float.isNaN(this.airTemperature)) {
             return this.airTemperature;
         }
