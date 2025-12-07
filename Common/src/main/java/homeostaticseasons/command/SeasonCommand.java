@@ -88,16 +88,16 @@ public class SeasonCommand {
             long time = HomeostaticSeasonsAPI.getSeasonTime(serverlevel, season);
 
             if (time != -1L) {
-                levelData.setGameTime(time);
+                levelData.setDayTime(time);
                 source.sendSuccess(() -> Component.translatable("commands.time.set", time), true);
             }
         }
 
-        return (int)(source.getLevel().getDayTime() % 24000L);
+        return (int)(source.getLevel().getDayTime());
     }
 
     private static int skipToSeason(CommandSourceStack source, Season season) {
-        long currentTime = source.getLevel().getGameTime();
+        long currentTime = source.getLevel().getDayTime();
 
         for (ServerLevel serverlevel : source.getServer().getAllLevels()) {
             ServerLevelData levelData = Services.PLATFORM.getServerLevelData(serverlevel);
@@ -105,7 +105,7 @@ public class SeasonCommand {
 
             if (timeUntilSeason != -1L) {
                 long newTime = currentTime + timeUntilSeason;
-                levelData.setGameTime(newTime);
+                levelData.setDayTime(newTime);
                 source.sendSuccess(() -> Component.translatable("commands.time.set", newTime), true);
             }
         }
