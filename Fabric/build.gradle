@@ -33,13 +33,15 @@ dependencies {
         // Datagen mods
     }
     else {
-        //modRuntimeOnly group: 'com.github.wendall911.homeostatic', name: "homeostatic-${minecraft_version}-fabric", version: "${homeostatic_version}"
+        modLocalRuntime group: 'com.github.wendall911.homeostatic', name: "homeostatic-${minecraft_version}-fabric", version: "${homeostatic_version}"
         // Runtime testing mods
         modLocalRuntime "curse.maven:glitchcore-955399:${glitch_core_fabric_version}"
-        //modRuntimeOnly "curse.maven:biomesoplenty-220318:${bop_fabric_version}"
+        //modLocalRuntime "curse.maven:biomesoplenty-220318:${bop_fabric_version}"
         modLocalRuntime "curse.maven:terrablender-565956:${terrablender_fabric_version}"
-        //modRuntimeOnly "curse.maven:regions-659110:${regions_fabric_version}"
-        //modRuntimeOnly "curse.maven:simpletextoverlay-321283:${simpletextoverlay_fabric_version}"
+        //modLocalRuntime "curse.maven:regions-659110:${regions_fabric_version}"
+        modLocalRuntime "org.ladysnake.cardinal-components-api:cardinal-components-base:${cardinal_components_version}"
+        modLocalRuntime "org.ladysnake.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
+        modLocalRuntime "curse.maven:simpletextoverlay-321283:${simpletextoverlay_fabric_version}"
         modLocalRuntime "curse.maven:byg-1070751:${byg_fabric_version}"
         modLocalRuntime "curse.maven:tyg-962544:${tyg_fabric_version}"
         modLocalRuntime "curse.maven:corgilib-693313:${corgilib_fabric_version}"
