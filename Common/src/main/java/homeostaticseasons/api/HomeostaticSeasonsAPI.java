@@ -3,6 +3,7 @@ package homeostaticseasons.api;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 
 import homeostaticseasons.config.ConfigHandler;
@@ -10,7 +11,7 @@ import homeostaticseasons.config.ConfigHandler;
 public class HomeostaticSeasonsAPI {
 
     public static Season getCurrentSeason(Level level) {
-        if (ConfigHandler.Common.isValidDimension(level.dimension())) {
+        if (isSeasonalDimension(level.dimension())) {
             if (ConfigHandler.Common.seasonChangeMethod() == SeasonChangeMethod.REALTIME) {
                 return getRealtimeSeason();
             }
@@ -27,7 +28,7 @@ public class HomeostaticSeasonsAPI {
     }
 
     public static Season getNextSeason(Level level, Season currentSeason) {
-        if (ConfigHandler.Common.isValidDimension(level.dimension())) {
+        if (isSeasonalDimension(level.dimension())) {
             return currentSeason.next();
         }
 
@@ -36,7 +37,7 @@ public class HomeostaticSeasonsAPI {
 
     public static long getSeasonTime(Level level, Season season) {
         if (ConfigHandler.Common.seasonChangeMethod() == SeasonChangeMethod.CONFIGURED
-                && ConfigHandler.Common.isValidDimension(level.dimension())) {
+                && isSeasonalDimension(level.dimension())) {
             return ConfigHandler.Common.getSeasonTime(season);
         }
 
@@ -44,7 +45,7 @@ public class HomeostaticSeasonsAPI {
     }
 
     public static long getTimeUntilNextSeason(Level level) {
-        if (ConfigHandler.Common.isValidDimension(level.dimension())) {
+        if (isSeasonalDimension(level.dimension())) {
             if (ConfigHandler.Common.seasonChangeMethod() == SeasonChangeMethod.REALTIME) {
                 return getRealtimeUntilNextSeason();
             }
@@ -58,7 +59,7 @@ public class HomeostaticSeasonsAPI {
 
     public static long getTimeUntilSeason(Level level, Season season) {
         if (ConfigHandler.Common.seasonChangeMethod() == SeasonChangeMethod.CONFIGURED
-                && ConfigHandler.Common.isValidDimension(level.dimension())) {
+                && isSeasonalDimension(level.dimension())) {
             return ConfigHandler.Common.getTimeUntilSeason(level.getGameTime(), season);
         }
 
@@ -219,6 +220,10 @@ public class HomeostaticSeasonsAPI {
                 return Season.LATE_WINTER;
             }
         }
+    }
+
+    public static boolean isSeasonalDimension(ResourceKey<Level> dimension) {
+        return ConfigHandler.Common.isValidDimension(dimension);
     }
 
 }
