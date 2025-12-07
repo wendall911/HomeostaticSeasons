@@ -19,12 +19,12 @@ dependencies {
     modImplementation group: 'technology.roughness.whitenoise', name: "whitenoise-${minecraft_version}-fabric", version: "${whitenoise_version}"
     include group: 'technology.roughness.whitenoise', name: "whitenoise-${minecraft_version}-fabric", version: "${whitenoise_version}"
 
-    modApi "dev.architectury:architectury-fabric:${architectury_version}"
-    modApi("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
+    modLocalRuntime "dev.architectury:architectury-fabric:${architectury_version}"
+    modLocalRuntime("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
 
-    modRuntimeOnly "net.jodah:typetools:0.6.3"
+    modLocalRuntime "net.jodah:typetools:0.6.3"
     modImplementation "com.electronwill.night-config:core:3.6.7"
 
     modLocalRuntime group: 'com.terraformersmc', name: 'modmenu', version: "${mod_menu_version}"
@@ -33,17 +33,17 @@ dependencies {
         // Datagen mods
     }
     else {
-        modRuntimeOnly group: 'com.github.wendall911.homeostatic', name: "homeostatic-${minecraft_version}-fabric", version: "${homeostatic_version}"
+        //modRuntimeOnly group: 'com.github.wendall911.homeostatic', name: "homeostatic-${minecraft_version}-fabric", version: "${homeostatic_version}"
         // Runtime testing mods
-        modRuntimeOnly "curse.maven:glitchcore-955399:${glitch_core_fabric_version}"
+        modLocalRuntime "curse.maven:glitchcore-955399:${glitch_core_fabric_version}"
         //modRuntimeOnly "curse.maven:biomesoplenty-220318:${bop_fabric_version}"
-        modRuntimeOnly "curse.maven:terrablender-565956:${terrablender_fabric_version}"
+        modLocalRuntime "curse.maven:terrablender-565956:${terrablender_fabric_version}"
         //modRuntimeOnly "curse.maven:regions-659110:${regions_fabric_version}"
         //modRuntimeOnly "curse.maven:simpletextoverlay-321283:${simpletextoverlay_fabric_version}"
-        modRuntimeOnly "curse.maven:byg-1070751:${byg_fabric_version}"
-        modRuntimeOnly "curse.maven:tyg-962544:${tyg_fabric_version}"
-        modRuntimeOnly "curse.maven:corgilib-693313:${corgilib_fabric_version}"
-        modRuntimeOnly "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_fabric_version}"
+        modLocalRuntime "curse.maven:byg-1070751:${byg_fabric_version}"
+        modLocalRuntime "curse.maven:tyg-962544:${tyg_fabric_version}"
+        modLocalRuntime "curse.maven:corgilib-693313:${corgilib_fabric_version}"
+        modLocalRuntime "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_fabric_version}"
     }
 }
 

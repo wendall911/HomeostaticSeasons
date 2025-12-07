@@ -50,7 +50,7 @@ dependencies {
     else {
         runtimeOnly group: 'com.github.wendall911.homeostatic', name: "homeostatic-${minecraft_version}-neoforge", version: "${homeostatic_version}"
         //runtimeOnly "curse.maven:glitchcore-955399:${glitch_core_neoforge_version}"
-        runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
+        //runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
         //runtimeOnly "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
         runtimeOnly "curse.maven:simpletextoverlay-321283:${simpletextoverlay_neoforge_version}"
         //runtimeOnly "dev.gigaherz.sewingkit:SewingKit-${minecraft_version}:${sewingkit_version}"
