@@ -12,8 +12,9 @@ Each sub-season has its own visual, weather and temperature changes.
 
 The duration of each sub-season is three in-game days (configurable), resulting
 in 9-day seasons. The current season is defined by the
-[Gametime](https://minecraft.wiki/w/Commands/time); using /season set
-EARLY_SPRING will reset to day 1 of early spring and set the Gametime to 0.
+[Daytime](https://minecraft.wiki/w/Commands/time); using /season set
+EARLY_SPRING will reset to day 1 of early spring, effectively setting the
+Daytime to 0. You can also use /time set 0 to reset to day 1 of early spring.
 The /season command can be used to check the current sub-season, skip to a
 specific sub-season or set a specific sub-season.
 
