@@ -24,10 +24,9 @@ public abstract class BiomeMixin {
         cir.setReturnValue(SeasonWeather.canPlaceSnow((Biome)(Object)this, pos, level));
     }
 
-    @Redirect(method = "shouldFreeze(Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;Z)Z", at=@At(value = "INVOKE", target = "net/minecraft/world/level/biome/Biome.warmEnoughToRain(Lnet/minecraft/core/BlockPos;)Z"))
-    public boolean homeostaticseasons$shouldFreeze_warmEnoughToRain(Biome biome, BlockPos pos, LevelReader level) {
+    @Redirect(method = "shouldFreeze(Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;Z)Z", at=@At(value = "INVOKE", target = "net/minecraft/world/level/biome/Biome.warmEnoughToRain(Lnet/minecraft/core/BlockPos;I)Z"))
+    public boolean homeostaticseasons$shouldFreeze_warmEnoughToRain(Biome biome, BlockPos pos, int seaLevel, LevelReader level) {
         return SeasonWeather.warmEnoughToRain(biome, pos, level);
     }
 
 }
-

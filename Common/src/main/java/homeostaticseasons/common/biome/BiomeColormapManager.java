@@ -14,10 +14,12 @@ import com.mojang.serialization.DataResult;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.biome.Biome;
 
@@ -33,7 +35,7 @@ import homeostaticseasons.network.SyncBiomeColormap;
 
 import static homeostaticseasons.HomeostaticSeasons.prefix;
 
-public class BiomeColormapManager extends SimpleJsonResourceReloadListener {
+public class BiomeColormapManager extends SimpleJsonResourceReloadListener<JsonElement> {
 
     private static final Map<ResourceLocation, BiomeColormap> COLORMAPS = new java.util.HashMap<>();
     private  static final Map<ResourceLocation, ColormapType> BIOMETYPE_TO_COLORMAPTYPE = new java.util.HashMap<>();
@@ -41,7 +43,7 @@ public class BiomeColormapManager extends SimpleJsonResourceReloadListener {
     private static final Gson GSON = new GsonBuilder().registerTypeAdapter(BiomeColormap.class, new BiomeColormap.Serializer()).create();
 
     public BiomeColormapManager() {
-        super(GSON, "biome/colormaps");
+        super(ExtraCodecs.JSON, FileToIdConverter.json("biome/colormaps"));
 
         for (BiomeCategory.Type type : BiomeCategory.Type.values()) {
             switch (type) {
@@ -74,9 +76,14 @@ public class BiomeColormapManager extends SimpleJsonResourceReloadListener {
     }
 
     public static BiomeColormap.ColormapType getColormapType(Holder<Biome> biome) {
-        ResourceLocation biomeCategory = ClimateSettings.prefix(BiomeCategoryManager.getBiomeCategory(biome).toString());
+        try {
+            ResourceLocation biomeCategory = ClimateSettings.prefix(BiomeCategoryManager.getBiomeCategory(biome).toString());
 
-        return BIOMETYPE_TO_COLORMAPTYPE.getOrDefault(biomeCategory, ColormapType.NORMAL);
+            return BIOMETYPE_TO_COLORMAPTYPE.getOrDefault(biomeCategory, ColormapType.NORMAL);
+        }
+        catch (NullPointerException e) {
+            return ColormapType.NORMAL;
+        }
     }
 
     public static void update(List<BiomeColormap> biomeColormapList) {

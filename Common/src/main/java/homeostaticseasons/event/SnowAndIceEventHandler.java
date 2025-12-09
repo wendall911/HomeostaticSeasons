@@ -28,13 +28,13 @@ public class SnowAndIceEventHandler {
     public static PlacedMeltablesSavedData getPlacedMeltablesSavedData(ServerLevel level) {
         DimensionDataStorage storage = level.getDataStorage();
 
-        return storage.computeIfAbsent(PlacedMeltablesSavedData.getFactory(), "homeostaticseasons_placed_meltables");
+        return storage.computeIfAbsent(PlacedMeltablesSavedData.TYPE);
     }
 
     public static ReplacedMeltablesSavedData getReplacedMeltablesSavedData(ServerLevel level) {
         DimensionDataStorage storage = level.getDataStorage();
 
-        return storage.computeIfAbsent(ReplacedMeltablesSavedData.getFactory(), "homeostaticseasons_replaced_meltables");
+        return storage.computeIfAbsent(ReplacedMeltablesSavedData.TYPE);
     }
 
 }

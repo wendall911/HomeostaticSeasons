@@ -7,7 +7,7 @@ dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     mappings(loom.layered {
         officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-${minecraft_version}:${mappings_version}@zip")
+        parchment("org.parchmentmc.data:parchment-${mappings_minecraft_version}:${mappings_version}@zip")
     })
 
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
@@ -36,16 +36,16 @@ dependencies {
         modLocalRuntime group: 'com.github.wendall911.homeostatic', name: "homeostatic-${minecraft_version}-fabric", version: "${homeostatic_version}"
         // Runtime testing mods
         modLocalRuntime "curse.maven:glitchcore-955399:${glitch_core_fabric_version}"
-        //modLocalRuntime "curse.maven:biomesoplenty-220318:${bop_fabric_version}"
+        modLocalRuntime "curse.maven:biomesoplenty-220318:${bop_fabric_version}"
         modLocalRuntime "curse.maven:terrablender-565956:${terrablender_fabric_version}"
         //modLocalRuntime "curse.maven:regions-659110:${regions_fabric_version}"
         modLocalRuntime "org.ladysnake.cardinal-components-api:cardinal-components-base:${cardinal_components_version}"
         modLocalRuntime "org.ladysnake.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
-        modLocalRuntime "curse.maven:simpletextoverlay-321283:${simpletextoverlay_fabric_version}"
-        modLocalRuntime "curse.maven:byg-1070751:${byg_fabric_version}"
-        modLocalRuntime "curse.maven:tyg-962544:${tyg_fabric_version}"
-        modLocalRuntime "curse.maven:corgilib-693313:${corgilib_fabric_version}"
-        modLocalRuntime "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_fabric_version}"
+        //modLocalRuntime "curse.maven:simpletextoverlay-321283:${simpletextoverlay_fabric_version}"
+        //modLocalRuntime "curse.maven:byg-1070751:${byg_fabric_version}"
+        //modLocalRuntime "curse.maven:tyg-962544:${tyg_fabric_version}"
+        //modLocalRuntime "curse.maven:corgilib-693313:${corgilib_fabric_version}"
+        //modLocalRuntime "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_fabric_version}"
     }
 }
 
@@ -55,6 +55,7 @@ loom {
         accessWidenerPath.set(aw)
     }
     mixin {
+        useLegacyMixinAp = true
         defaultRefmapName.set("${mod_id}.refmap.json")
     }
     runs {

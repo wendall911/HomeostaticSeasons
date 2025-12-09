@@ -17,7 +17,6 @@
   },
   "client": [
     "ClientBiomeMixin",
-    "FoliageColorMixin",
-    "LevelRendererMixin"
+    "WeatherEffectRendererMixin"
   ]
 }

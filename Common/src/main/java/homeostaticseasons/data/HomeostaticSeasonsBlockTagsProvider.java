@@ -27,7 +27,7 @@ public class HomeostaticSeasonsBlockTagsProvider extends IntrinsicHolderTagsProv
         getOrCreateRawBuilder(TagManager.Blocks.REPLACEABLE_BY_SNOW)
             .addOptionalTag(BlockTags.SAPLINGS.location())
             .addOptionalTag(BlockTags.FLOWERS.location())
-            .addOptionalTag(BlockTags.TALL_FLOWERS.location())
+            .addOptionalTag(BlockTags.SMALL_FLOWERS.location())
             .addElement(RegistryHelper.getBlockId(Blocks.SHORT_GRASS))
             .addElement(RegistryHelper.getBlockId(Blocks.TALL_GRASS))
             .addElement(RegistryHelper.getBlockId(Blocks.FERN))

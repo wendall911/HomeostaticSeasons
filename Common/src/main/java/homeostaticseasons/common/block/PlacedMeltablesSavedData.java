@@ -1,89 +1,42 @@
 package homeostaticseasons.common.block;
 
-import org.jetbrains.annotations.NotNull;
+import com.mojang.serialization.Codec;
 
-import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
-import it.unimi.dsi.fastutil.longs.LongArraySet;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
+import it.unimi.dsi.fastutil.longs.LongSet;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup.Provider;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.LongArrayTag;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.saveddata.SavedData;
-
-import homeostaticseasons.HomeostaticSeasons;
+import net.minecraft.world.level.saveddata.SavedDataType;
 
 public class PlacedMeltablesSavedData extends SavedData {
 
-    Long2ObjectArrayMap<LongArraySet> chunkToPlacedMeltablesMap = new Long2ObjectArrayMap<>();
+    private final LongSet all;
+    private static final Codec<LongSet> LONG_SET = Codec.LONG_STREAM.xmap(LongOpenHashSet::toSet, LongSet::longStream);
+    private static final Codec<PlacedMeltablesSavedData> CODEC = LONG_SET.xmap(PlacedMeltablesSavedData::new, data -> data.all);
+    public static final SavedDataType<PlacedMeltablesSavedData> TYPE = new SavedDataType<>("homeostaticseasons_placed_meltables", PlacedMeltablesSavedData::new, CODEC, null);
 
-    @Override
-    @NotNull
-    public CompoundTag save(@NotNull CompoundTag compoundTag, @NotNull Provider provider) {
-        chunkToPlacedMeltablesMap.long2ObjectEntrySet().fastForEach(entry -> {
-            if (!entry.getValue().isEmpty()) {
-                compoundTag.put(entry.getLongKey() + "", new LongArrayTag(entry.getValue().toLongArray()));
-            }
-        });
+    private PlacedMeltablesSavedData(LongSet all) {
+        this.all = all;
+    }
 
-        return compoundTag;
+    public PlacedMeltablesSavedData() {
+        this(new LongOpenHashSet());
     }
 
     public boolean isManuallyPlaced(BlockPos pos) {
-        ChunkPos chunkPos = new ChunkPos(pos);
-        LongArraySet placedMeltablesInChunk = chunkToPlacedMeltablesMap.get(chunkPos.toLong());
-
-        return placedMeltablesInChunk != null && placedMeltablesInChunk.contains(pos.asLong());
+        return all.contains(pos.asLong());
     }
 
-    public void setManuallyPlaced(BlockPos pos, Boolean manuallyPlaced) {
-        ChunkPos chunkPos = new ChunkPos(pos);
-        long chunkKey = chunkPos.toLong();
-        LongArraySet placedMeltablesInChunk = chunkToPlacedMeltablesMap.get(chunkKey);
-
-        if (placedMeltablesInChunk != null) {
-            if (manuallyPlaced) {
-                placedMeltablesInChunk.add(pos.asLong());
-            }
-            else {
-                placedMeltablesInChunk.remove(pos.asLong());
-                if (placedMeltablesInChunk.isEmpty()) {
-                    chunkToPlacedMeltablesMap.remove(chunkKey);
-                }
-            }
-        }
-        else if (manuallyPlaced) {
-            LongArraySet newSet = new LongArraySet();
-
-            newSet.add(pos.asLong());
-            chunkToPlacedMeltablesMap.put(chunkKey, newSet);
-        }
-
+    public void addPosition(BlockPos pos) {
+        all.add(pos.asLong());
         setDirty();
     }
 
-    public static PlacedMeltablesSavedData createFromCompoundTag(CompoundTag compoundTag, Provider provider) {
-        PlacedMeltablesSavedData savedData = new PlacedMeltablesSavedData();
-
-        compoundTag.getAllKeys().forEach(key -> {
-            // Load data from compoundTag if needed
-            try {
-                long longKey = Long.parseLong(key);
-                long[] longArray = compoundTag.getLongArray(key);
-
-                savedData.chunkToPlacedMeltablesMap.put(longKey, new LongArraySet(longArray));
-            }
-            catch (NumberFormatException e) {
-                HomeostaticSeasons.LOGGER.error("Error loading PlacedMeltablesSavedData key: {}", key, e);
-            }
-        });
-
-        return savedData;
-    }
-
-    public static SavedData.Factory<PlacedMeltablesSavedData> getFactory() {
-        return new SavedData.Factory<>(PlacedMeltablesSavedData::new, PlacedMeltablesSavedData::createFromCompoundTag, null);
+    public void removePosition(BlockPos pos) {
+        if (all.remove(pos.asLong())) {
+            setDirty();
+        }
     }
 
 }

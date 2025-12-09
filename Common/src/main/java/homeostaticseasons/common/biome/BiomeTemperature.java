@@ -11,7 +11,6 @@ import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.biome.Biome;
@@ -19,7 +18,6 @@ import net.minecraft.world.level.biome.Biome.Precipitation;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
-import net.minecraft.world.level.storage.LevelData;
 
 import climatesettings.common.biome.BiomeTypeData;
 import climatesettings.common.biome.BiomeTypeDataManager;
@@ -76,7 +74,6 @@ public class BiomeTemperature {
             return this.airTemperature;
         }
 
-        LevelData info = level.getLevelData();
         ArrayList<Pair<Holder<Biome>, BlockPos>> biomes = new ArrayList<>();
         int chunkRange = 3;
         float accumulatedDryTemp = 0.0F;
@@ -114,12 +111,9 @@ public class BiomeTemperature {
 
             accumulatedDryTemp += getSeasonAdjustedTemperature(level, chunkBiome, chunkTemp, chunkPos, currentSeason);
 
-            // If weather is enabled
-            if (info.getGameRules().getBoolean(GameRules.RULE_WEATHER_CYCLE)) {
-                double chunkHumidity = getBiomeHumidity(level, chunkBiome, chunkPos);
+            double chunkHumidity = getBiomeHumidity(level, chunkBiome, chunkPos);
 
-                accumulatedHumidity += (float) chunkHumidity;
-            }
+            accumulatedHumidity += (float) chunkHumidity;
         }
 
         relativeHumidity = accumulatedHumidity / biomes.size();
@@ -148,7 +142,7 @@ public class BiomeTemperature {
     }
 
     private static float getHeightAdjustedTemperature(Level level, Holder<Biome> biomeHolder, BlockPos blockPos) {
-        Biome.Precipitation precipitation = getPrecipitationAt(biomeHolder.value(), blockPos);
+        Biome.Precipitation precipitation = getPrecipitationAt(level, biomeHolder.value(), blockPos);
         BiomeTypeData biomeTypeData = BiomeTypeDataManager.getDataForBiome(biomeHolder);
         float temperature = biomeTypeData.getTemperature(precipitation);
 
@@ -167,7 +161,7 @@ public class BiomeTemperature {
      * Fixes math to give a corrected height even if max height has been modified.
      */
     private static float getAdjustedHeight(Level level, float y) {
-        return y / (level.getMaxBuildHeight() / 256.0F);
+        return y / (level.getMaxY() / 256.0F);
     }
 
     private static float getSeasonAdjustedTemperature(Level level, Holder<Biome> biomeHolder,
@@ -178,7 +172,7 @@ public class BiomeTemperature {
             int season;
             float lateSummerOffset = BiomeTypeData.MC_DEGREE * 5;
             int subSeason = currentSeason.ordinal();
-            float variation = biomeTypeData.getSeasonVariation(getPrecipitationAt(biomeHolder.value(), blockPos)) / 2.0F;
+            float variation = biomeTypeData.getSeasonVariation(getPrecipitationAt(level, biomeHolder.value(), blockPos)) / 2.0F;
 
             if ((subSeason + 9) <= 12) {
                 season = subSeason + 9;
@@ -237,7 +231,7 @@ public class BiomeTemperature {
     private static double getBiomeHumidity(Level level, Holder<Biome> biomeHolder, BlockPos blockPos) {
         Biome biome = biomeHolder.value();
         double biomeHumidity;
-        double maxRH = getMaxBiomeHumidity(biomeHolder, blockPos);
+        double maxRH = getMaxBiomeHumidity(level, biomeHolder, blockPos);
         double minRH = maxRH - 20;
 
         if (biome.hasPrecipitation()) {
@@ -257,10 +251,10 @@ public class BiomeTemperature {
         return biomeHumidity;
     }
 
-    private static double getMaxBiomeHumidity(Holder<Biome> biomeHolder, BlockPos blockPos) {
+    private static double getMaxBiomeHumidity(Level level, Holder<Biome> biomeHolder, BlockPos blockPos) {
         BiomeTypeData biomeTypeData = BiomeTypeDataManager.getDataForBiome(biomeHolder);
 
-        return biomeTypeData.getHumidity(getPrecipitationAt(biomeHolder.value(), blockPos));
+        return biomeTypeData.getHumidity(getPrecipitationAt(level, biomeHolder.value(), blockPos));
     }
 
     private static float getDayNightOffset(Level level, Holder<Biome> biomeHolder, double relativeHumidity) {
@@ -314,21 +308,22 @@ public class BiomeTemperature {
      * Need to mock what the internal biome method does for precipitation type,
      * as this is used to override on the client.
      */
-    public static Precipitation getPrecipitationAt(Biome biome, BlockPos pos) {
+    public static Precipitation getPrecipitationAt(Level level, Biome biome, BlockPos pos) {
         if (!biome.hasPrecipitation()) {
             return Biome.Precipitation.NONE;
         }
         else {
-            return coldEnoughToSnow(biome, pos) ? Biome.Precipitation.SNOW : Biome.Precipitation.RAIN;
+            return coldEnoughToSnow(level, biome, pos) ? Biome.Precipitation.SNOW : Biome.Precipitation.RAIN;
         }
     }
 
-    public static boolean coldEnoughToSnow(Biome biome, BlockPos pos) {
-        return !warmEnoughToRain(biome, pos);
+    public static boolean coldEnoughToSnow(Level level, Biome biome, BlockPos pos) {
+        return !warmEnoughToRain(level, biome, pos);
     }
 
-    public static boolean warmEnoughToRain(Biome biome, BlockPos pos) {
-        return biome.getTemperature(pos) >= 0.15F;
+    @SuppressWarnings("deprecation")
+    public static boolean warmEnoughToRain(Level level, Biome biome, BlockPos pos) {
+        return biome.getTemperature(pos, level.getSeaLevel()) >= 0.15F;
     }
 
     @Override

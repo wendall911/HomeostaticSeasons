@@ -43,7 +43,7 @@ public class SeasonWeather {
             return warmEnoughToRain(biome, pos, level);
         }
         else {
-            return biome.warmEnoughToRain(pos);
+            return biome.warmEnoughToRain(pos, levelReader.getSeaLevel());
         }
     }
 
@@ -60,7 +60,7 @@ public class SeasonWeather {
             return precipitation == Biome.Precipitation.SNOW;
         }
 
-        return !biome.warmEnoughToRain(pos);
+        return !biome.warmEnoughToRain(pos, levelReader.getSeaLevel());
     }
 
     public static boolean canSnow(Biome biome, BlockPos pos, ServerLevel serverLevel) {
@@ -70,13 +70,13 @@ public class SeasonWeather {
             return precipitation == Biome.Precipitation.SNOW;
         }
         else {
-            return !biome.warmEnoughToRain(pos);
+            return !biome.warmEnoughToRain(pos, serverLevel.getSeaLevel());
         }
     }
 
     public static boolean canPlaceSnow(BlockPos pos, LevelReader level, boolean canSnow) {
         if (canSnow) {
-            if (pos.getY() >= level.getMinBuildHeight() && pos.getY() < level.getMaxBuildHeight() && level.getBrightness(LightLayer.BLOCK, pos) < 10) {
+            if (level.isInsideBuildHeight(pos.getY()) && level.getBrightness(LightLayer.BLOCK, pos) < 10) {
                 BlockState blockstate = level.getBlockState(pos);
 
                 if ((blockstate.isAir() || blockstate.is(Blocks.SNOW)) && Blocks.SNOW.defaultBlockState().canSurvive(level, pos)) {
@@ -113,7 +113,7 @@ public class SeasonWeather {
                     == Biome.Precipitation.RAIN && biomeTemperature.isWarmEnoughToRain();
             }
             else {
-                return BiomeTemperature.getPrecipitationAt(biome.value(), pos) == Biome.Precipitation.RAIN;
+                return BiomeTemperature.getPrecipitationAt(level, biome.value(), pos) == Biome.Precipitation.RAIN;
             }
         }
     }
@@ -124,7 +124,7 @@ public class SeasonWeather {
 
     public static Biome.Precipitation getPrecipitationType(Biome biome, BlockPos pos, Level level) {
         if (!isValid(level)) {
-            return biome.getPrecipitationAt(pos);
+            return biome.getPrecipitationAt(pos, level.getSeaLevel());
         }
 
         long i = pos.asLong();

@@ -24,9 +24,9 @@ public abstract class BlockBehaviorMixin {
         }
     }
 
-    @Inject(method = "onRemove", at = @At("HEAD"))
-    public void checkIfMeltableRemoved(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving, CallbackInfo ci) {
-        if (level instanceof ServerLevel serverLevel && state.getBlock() instanceof Meltable meltable && newState.isAir()) {
+    @Inject(method = "affectNeighborsAfterRemoval", at = @At("HEAD"))
+    public void checkIfMeltableRemoved(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston, CallbackInfo ci) {
+        if (level instanceof ServerLevel serverLevel && state.getBlock() instanceof Meltable meltable && level.getBlockState(pos).isAir()) {
             meltable.onMeltableReplaced(serverLevel, pos);
         }
     }

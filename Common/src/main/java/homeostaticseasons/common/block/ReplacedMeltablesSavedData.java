@@ -1,104 +1,71 @@
 package homeostaticseasons.common.block;
 
-import org.jetbrains.annotations.NotNull;
+import java.util.List;
 
-import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
+import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup.Provider;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.saveddata.SavedData;
-
-import homeostaticseasons.HomeostaticSeasons;
+import net.minecraft.world.level.saveddata.SavedDataType;
 
 public class ReplacedMeltablesSavedData extends SavedData {
 
-    Long2ObjectArrayMap<Long2ObjectArrayMap<BlockState>> cunkToReplacedMeltablesMap = new Long2ObjectArrayMap<>();
+    public static final Codec<ReplacedMeltablesSavedData> CODEC = RecordCodecBuilder.create(
+        instance -> instance.group(
+            BlockStateWithPosition.CODEC
+                .listOf()
+                .optionalFieldOf("records", List.of())
+                .forGetter(data ->
+                    data.replacedMeltablesMap.long2ObjectEntrySet().stream().map(BlockStateWithPosition::from).toList())
+        ).apply(instance, ReplacedMeltablesSavedData::new)
+    );
+    public static final SavedDataType<ReplacedMeltablesSavedData> TYPE = new SavedDataType<>("homeostaticseasons_replaced_meltables", ReplacedMeltablesSavedData::new, CODEC, null);
 
-    @Override
-    @NotNull
-    public CompoundTag save(@NotNull CompoundTag compoundTag, @NotNull Provider provider) {
-        cunkToReplacedMeltablesMap.long2ObjectEntrySet().fastForEach(entry -> {
-            if (!entry.getValue().isEmpty()) {
-                CompoundTag innerTag = new CompoundTag();
+    private final Long2ObjectLinkedOpenHashMap<BlockState> replacedMeltablesMap = new Long2ObjectLinkedOpenHashMap<>();
 
-                entry.getValue().long2ObjectEntrySet().fastForEach(innerEntry -> {
-                    BlockState.CODEC.encode(innerEntry.getValue(), NbtOps.INSTANCE, NbtOps.INSTANCE.empty()).result().ifPresent(element -> {
-                        innerTag.put(innerEntry.getLongKey() + "", element);
-                    });
-                });
-
-                compoundTag.put(entry.getLongKey() + "", innerTag);
-            }
-        });
-
-        return compoundTag;
+    public ReplacedMeltablesSavedData() {
+        this.setDirty();
     }
 
-    public BlockState getReplaced(BlockPos pos) {
-        ChunkPos chunkPos = new ChunkPos(pos);
-        Long2ObjectArrayMap<BlockState> replacedMeltablesInChunk = cunkToReplacedMeltablesMap.get(chunkPos.toLong());
-
-        return replacedMeltablesInChunk != null ? replacedMeltablesInChunk.get(pos.asLong()) : null;
+    private ReplacedMeltablesSavedData(List<BlockStateWithPosition> records) {
+        for (BlockStateWithPosition record : records) {
+            replacedMeltablesMap.put(record.blockPos(), record.blockState());
+        }
     }
 
-    public void setReplaced(BlockPos pos, BlockState replacedState) {
-        ChunkPos chunkPos = new ChunkPos(pos);
-        long chunkKey = chunkPos.toLong();
-        Long2ObjectArrayMap<BlockState> replacedMeltablesInChunk = cunkToReplacedMeltablesMap.get(chunkKey);
+    public BlockState getReplaced(BlockPos blockPos) {
+        return replacedMeltablesMap.get(blockPos.asLong());
+    }
 
-        if (replacedMeltablesInChunk != null) {
-            if (replacedState != null) {
-                replacedMeltablesInChunk.put(pos.asLong(), replacedState);
-            }
-            else {
-                replacedMeltablesInChunk.remove(pos.asLong());
-                if (replacedMeltablesInChunk.isEmpty()) {
-                    cunkToReplacedMeltablesMap.remove(chunkKey);
-                }
-            }
-        }
-        else if (replacedState != null) {
-            Long2ObjectArrayMap<BlockState> newMap = new Long2ObjectArrayMap<>();
-
-            newMap.put(pos.asLong(), replacedState);
-            cunkToReplacedMeltablesMap.put(chunkKey, newMap);
-        }
+    public void addReplaced(BlockPos pos, BlockState replacedState) {
+        replacedMeltablesMap.put(pos.asLong(), replacedState);
 
         setDirty();
     }
 
-    public static ReplacedMeltablesSavedData createFromCompoundTag(CompoundTag compoundTag, Provider provider) {
-        ReplacedMeltablesSavedData savedData = new ReplacedMeltablesSavedData();
-
-        compoundTag.getAllKeys().forEach(key -> {
-            try {
-                long chunkKey = Long.parseLong(key);
-                Long2ObjectArrayMap<BlockState> posToBlockStateMap = new Long2ObjectArrayMap<>();
-                CompoundTag innerTag = compoundTag.getCompound(key);
-
-                innerTag.getAllKeys().forEach(innerKey -> {
-                    long blockKey = Long.parseLong(innerKey);
-                    BlockState.CODEC.decode(NbtOps.INSTANCE, innerTag.get(innerKey)).result().ifPresent(result -> {
-                        posToBlockStateMap.put(blockKey, result.getFirst());
-                    });
-                });
-
-                savedData.cunkToReplacedMeltablesMap.put(chunkKey, posToBlockStateMap);
-            }
-            catch (NumberFormatException e) {
-                HomeostaticSeasons.LOGGER.error("Failed to load replaced meltables data for chunk key: {}", key, e);
-            }
-        });
-
-        return savedData;
+    public void removeReplaced(BlockPos pos) {
+        if (replacedMeltablesMap.remove(pos.asLong()) != null) {
+            setDirty();
+        }
     }
 
-    public static SavedData.Factory<ReplacedMeltablesSavedData> getFactory() {
-        return new SavedData.Factory<>(ReplacedMeltablesSavedData::new, ReplacedMeltablesSavedData::createFromCompoundTag, null);
+    record BlockStateWithPosition(long blockPos, BlockState blockState) {
+
+        public static final Codec<BlockStateWithPosition> CODEC = RecordCodecBuilder.create(
+            instance -> instance.group(
+                Codec.LONG.fieldOf("blockPos").forGetter(BlockStateWithPosition::blockPos),
+                BlockState.CODEC.fieldOf("blockState").forGetter(BlockStateWithPosition::blockState)
+            ).apply(instance, BlockStateWithPosition::new)
+        );
+
+        public static BlockStateWithPosition from(Long2ObjectLinkedOpenHashMap.Entry<BlockState> entry) {
+            return new BlockStateWithPosition(entry.getLongKey(), entry.getValue());
+        }
+
     }
 
 }

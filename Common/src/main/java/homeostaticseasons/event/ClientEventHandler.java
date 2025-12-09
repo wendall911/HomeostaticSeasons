@@ -6,6 +6,7 @@ import net.minecraft.world.level.Level;
 
 import homeostaticseasons.api.HomeostaticSeasonsAPI;
 import homeostaticseasons.api.Season;
+import homeostaticseasons.common.block.BirchFoliageTinter;
 
 public class ClientEventHandler {
 
@@ -27,17 +28,23 @@ public class ClientEventHandler {
                 else if (lastSeason != currentSeason) {
                     lastSeason = currentSeason;
                     lastSeasonDay = 1;
-                    minecraft.levelRenderer.allChanged();
+                    updateRenderer(minecraft);
                 }
                 else {
                     int seasonDay = getSeasonDay(minecraft, currentSeason);
+
                     if (seasonDay > lastSeasonDay) {
                         lastSeasonDay = seasonDay;
-                        minecraft.levelRenderer.allChanged();
+                        updateRenderer(minecraft);
                     }
                 }
             }
         }
+    }
+
+    private static void updateRenderer(Minecraft minecraft) {
+        BirchFoliageTinter.clearCache();
+        minecraft.levelRenderer.allChanged();
     }
 
     private static int getSeasonDay(Minecraft minecraft, Season season) {

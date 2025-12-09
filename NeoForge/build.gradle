@@ -12,7 +12,7 @@ neoForge {
         accessTransformers.from(at.absolutePath)
     }
     parchment {
-        minecraftVersion = minecraft_version
+        minecraftVersion = mappings_minecraft_version
         mappingsVersion = mappings_version
     }
     runs {
@@ -26,9 +26,9 @@ neoForge {
         server {
             server()
         }
-        data {
+        clientData {
             programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
-            data()
+            clientData()
         }
     }
     mods {
@@ -49,15 +49,15 @@ dependencies {
     }
     else {
         runtimeOnly group: 'com.github.wendall911.homeostatic', name: "homeostatic-${minecraft_version}-neoforge", version: "${homeostatic_version}"
-        //runtimeOnly "curse.maven:glitchcore-955399:${glitch_core_neoforge_version}"
+        runtimeOnly "curse.maven:glitchcore-955399:${glitch_core_neoforge_version}"
         //runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
         //runtimeOnly "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
-        runtimeOnly "curse.maven:simpletextoverlay-321283:${simpletextoverlay_neoforge_version}"
+        //runtimeOnly "curse.maven:simpletextoverlay-321283:${simpletextoverlay_neoforge_version}"
         //runtimeOnly "dev.gigaherz.sewingkit:SewingKit-${minecraft_version}:${sewingkit_version}"
         //runtimeOnly "curse.maven:configured-457570:4462839"
-        //runtimeOnly "curse.maven:biomesoplenty-220318:${bop_neoforge_version}"
+        runtimeOnly "curse.maven:biomesoplenty-220318:${bop_neoforge_version}"
         runtimeOnly "curse.maven:terrablender-940057:${terrablender_neoforge_version}"
-        runtimeOnly "curse.maven:regions-659110:${regions_neoforge_version}"
+        //runtimeOnly "curse.maven:regions-659110:${regions_neoforge_version}"
         //runtimeOnly "curse.maven:terralith-513688:5512077"
         //runtimeOnly "curse.maven:primalwinter-393321:4575861"
         //runtimeOnly "curse.maven:byg-1070751:${byg_neoforge_version}"

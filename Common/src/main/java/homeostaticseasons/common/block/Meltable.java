@@ -16,20 +16,19 @@ public interface Meltable {
 
     default void onMeltableReplaced(ServerLevel level, BlockPos pos) {
         // Flush any saved data about this meltable block being manually placed or replaced
-        SnowAndIceEventHandler.getPlacedMeltablesSavedData(level).setManuallyPlaced(pos, false);
-        SnowAndIceEventHandler.getReplacedMeltablesSavedData(level).setReplaced(pos, null);
+        SnowAndIceEventHandler.getPlacedMeltablesSavedData(level).removePosition(pos);
+        SnowAndIceEventHandler.getReplacedMeltablesSavedData(level).removeReplaced(pos);
     }
 
     default void onMeltableManuallyPlaced(ServerLevel level, BlockPos pos) {
-        SnowAndIceEventHandler.getPlacedMeltablesSavedData(level).setManuallyPlaced(pos, true);
+        SnowAndIceEventHandler.getPlacedMeltablesSavedData(level).addPosition(pos);
     }
 
     static void replaceBlockOnSnow(ServerLevel level, BlockPos pos) {
         BlockState plantBlockState = level.getBlockState(pos);
 
         if (plantBlockState.is(TagManager.Blocks.REPLACEABLE_BY_SNOW)) {
-            if (pos.getY() >= level.getMinBuildHeight()
-                    && pos.getY() < level.getMaxBuildHeight() - 1
+            if (level.isInsideBuildHeight(pos.getY())
                     && level.getBrightness(LightLayer.BLOCK, pos) < 10) {
                 BlockState upperBlockState = level.getBlockState(pos.above());
 
@@ -37,7 +36,7 @@ public interface Meltable {
                         && upperBlockState.getProperties().contains(DoublePlantBlock.HALF)) {
                     if (upperBlockState.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.UPPER) {
                         SnowAndIceEventHandler.cacheMeltableBlock(pos);
-                        SnowAndIceEventHandler.getReplacedMeltablesSavedData(level).setReplaced(pos, plantBlockState);
+                        SnowAndIceEventHandler.getReplacedMeltablesSavedData(level).addReplaced(pos, plantBlockState);
                         level.setBlock(pos, Blocks.SNOW.defaultBlockState(), Block.UPDATE_KNOWN_SHAPE);
                         level.setBlockAndUpdate(pos.above(), Blocks.AIR.defaultBlockState());
                         Blocks.SNOW.defaultBlockState().updateNeighbourShapes(level, pos, Block.UPDATE_ALL);
@@ -46,7 +45,7 @@ public interface Meltable {
                 }
                 else if (upperBlockState.isAir()) {
                     SnowAndIceEventHandler.cacheMeltableBlock(pos);
-                    SnowAndIceEventHandler.getReplacedMeltablesSavedData(level).setReplaced(pos, plantBlockState);
+                    SnowAndIceEventHandler.getReplacedMeltablesSavedData(level).addReplaced(pos, plantBlockState);
                     level.setBlockAndUpdate(pos, Blocks.SNOW.defaultBlockState());
                 }
             }

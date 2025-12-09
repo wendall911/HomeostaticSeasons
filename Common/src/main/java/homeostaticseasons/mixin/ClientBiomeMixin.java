@@ -18,7 +18,7 @@ import homeostaticseasons.api.SeasonWeather;
 public abstract class ClientBiomeMixin {
 
     @Inject(method = "getPrecipitationAt", at = @At("HEAD"), cancellable = true)
-    public void homeostaticseasons$getPrecipitationAt(BlockPos pos, CallbackInfoReturnable<Precipitation> cir) {
+    public void homeostaticseasons$getPrecipitationAt(BlockPos pos, int seaLevel, CallbackInfoReturnable<Precipitation> cir) {
         Minecraft minecraft = Minecraft.getInstance();
         Level level = minecraft.level;
 
