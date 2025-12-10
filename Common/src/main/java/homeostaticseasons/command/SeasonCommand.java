@@ -30,7 +30,8 @@ public class SeasonCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("season")
             .then(Commands.literal("set")
-                .requires(cs -> isConfigured() && cs.hasPermission(2))
+                .requires(cs -> isConfigured())
+                .requires(Commands.hasPermission(Commands.LEVEL_ALL))
                 .then(Commands.argument("season", StringArgumentType.string())
                     .suggests(SUGGEST_SEASONS)
                     .executes(
@@ -42,7 +43,8 @@ public class SeasonCommand {
                 )
             )
             .then(Commands.literal("skip")
-                .requires(cs -> isConfigured() && cs.hasPermission(2))
+                .requires(cs -> isConfigured())
+                .requires(Commands.hasPermission(Commands.LEVEL_ALL))
                 .then(Commands.argument("season", StringArgumentType.string())
                     .suggests(SUGGEST_SEASONS)
                     .executes(
@@ -54,29 +56,32 @@ public class SeasonCommand {
                 )
             )
             .then(Commands.literal("query")
-                .requires(SeasonCommand::isValidDimension)
                 .executes(ctx -> {
-                    ServerLevel level = ctx.getSource().getLevel();
-                    Season currentSeason = HomeostaticSeasonsAPI.getCurrentSeason(level);
-                    long ticksUntilNextSeason = HomeostaticSeasonsAPI.getTimeUntilNextSeason(level);
+                    if (SeasonCommand.isValidDimension(ctx.getSource())) {
+                        ServerLevel level = ctx.getSource().getLevel();
+                        Season currentSeason = HomeostaticSeasonsAPI.getCurrentSeason(level);
+                        long ticksUntilNextSeason = HomeostaticSeasonsAPI.getTimeUntilNextSeason(level);
 
-                    ctx.getSource().sendSuccess(() -> Component.translatable(
-                        HomeostaticSeasons.MODID + ".command.query_season",
-                        Component.translatable(
-                            currentSeason.getTranslationKey()
-                        )
-                    ), false);
-
-                    if (ConfigHandler.Common.seasonChangeMethod() != SeasonChangeMethod.FIXED) {
                         ctx.getSource().sendSuccess(() -> Component.translatable(
-                            HomeostaticSeasons.MODID + ".command.query_next_season",
-                            String.format("%.1f", (double) ticksUntilNextSeason / 24000D),
-                            Long.toString(ticksUntilNextSeason),
-                            Component.translatable((HomeostaticSeasonsAPI.getNextSeason(level, currentSeason)).getTranslationKey())
+                            HomeostaticSeasons.MODID + ".command.query_season",
+                            Component.translatable(
+                                currentSeason.getTranslationKey()
+                            )
                         ), false);
+
+                        if (ConfigHandler.Common.seasonChangeMethod() != SeasonChangeMethod.FIXED) {
+                            ctx.getSource().sendSuccess(() -> Component.translatable(
+                                HomeostaticSeasons.MODID + ".command.query_next_season",
+                                String.format("%.1f", (double) ticksUntilNextSeason / 24000D),
+                                Long.toString(ticksUntilNextSeason),
+                                Component.translatable((HomeostaticSeasonsAPI.getNextSeason(level, currentSeason)).getTranslationKey())
+                            ), false);
+                        }
+
+                        return currentSeason.ordinal();
                     }
 
-                    return currentSeason.ordinal();
+                    return -1;
                 })
             )
         );

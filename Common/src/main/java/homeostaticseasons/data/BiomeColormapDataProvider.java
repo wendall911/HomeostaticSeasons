@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import homeostaticseasons.HomeostaticSeasons;
 import homeostaticseasons.common.biome.BiomeColormap;
@@ -19,7 +19,7 @@ import homeostaticseasons.common.biome.BiomeColormapManager;
 
 public class BiomeColormapDataProvider implements DataProvider {
 
-    private final Map<ResourceLocation, BiomeColormap> BIOME_TYPES_MAP = new HashMap<>();
+    private final Map<Identifier, BiomeColormap> BIOME_TYPES_MAP = new HashMap<>();
     private final PackOutput packOutput;
 
     public BiomeColormapDataProvider(final PackOutput packOutput) {
@@ -60,13 +60,13 @@ public class BiomeColormapDataProvider implements DataProvider {
         add(HomeostaticSeasons.prefix("late_winter_temperate"), 0x658979, 0x4E8883, 0x80A745);
     }
 
-    protected void add(ResourceLocation id, int grassColor, float grassSaturation, int foliageColor, float foliageSaturation, int birchColor) {
+    protected void add(Identifier id, int grassColor, float grassSaturation, int foliageColor, float foliageSaturation, int birchColor) {
         BiomeColormap biomeColormap = new BiomeColormap(id, grassColor, grassSaturation, foliageColor, foliageSaturation, birchColor);
 
         BIOME_TYPES_MAP.put(id, biomeColormap);
     }
 
-    protected void add(ResourceLocation id, int grassColor, int foliageColor, int birchColor) {
+    protected void add(Identifier id, int grassColor, int foliageColor, int birchColor) {
         BiomeColormap biomeColormap = new BiomeColormap(id, grassColor, foliageColor, birchColor);
 
         BIOME_TYPES_MAP.put(id, biomeColormap);
@@ -79,7 +79,7 @@ public class BiomeColormapDataProvider implements DataProvider {
 
         registerBiomeColormapData();
 
-        for (Map.Entry<ResourceLocation, BiomeColormap> entry : BIOME_TYPES_MAP.entrySet()) {
+        for (Map.Entry<Identifier, BiomeColormap> entry : BIOME_TYPES_MAP.entrySet()) {
             PackOutput.PathProvider pathProvider = getPath();
 
             futures.add(DataProvider.saveStable(cache,

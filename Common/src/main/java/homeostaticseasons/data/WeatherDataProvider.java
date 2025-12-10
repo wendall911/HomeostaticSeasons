@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import homeostaticseasons.HomeostaticSeasons;
 import homeostaticseasons.api.Season;
@@ -24,7 +24,7 @@ import static net.minecraft.server.level.ServerLevel.THUNDER_DELAY;
 
 public class WeatherDataProvider implements DataProvider {
 
-    private final Map<ResourceLocation, WeatherData> SEASONS_WEATHER_MAP = new HashMap<>();
+    private final Map<Identifier, WeatherData> SEASONS_WEATHER_MAP = new HashMap<>();
     private final PackOutput packOutput;
 
     public WeatherDataProvider(final PackOutput packOutput) {
@@ -46,7 +46,7 @@ public class WeatherDataProvider implements DataProvider {
         add(prefix(Season.LATE_WINTER.getSerializedName()), new WeatherData(RAIN_DELAY.getMinValue(), 90000, -1, -1));
     }
 
-    protected void add(ResourceLocation seasonLoc, WeatherData weatherData) {
+    protected void add(Identifier seasonLoc, WeatherData weatherData) {
         SEASONS_WEATHER_MAP.put(seasonLoc, weatherData);
     }
 
@@ -57,7 +57,7 @@ public class WeatherDataProvider implements DataProvider {
 
         registerWeatherData();
 
-        for (Map.Entry<ResourceLocation, WeatherData> entry : SEASONS_WEATHER_MAP.entrySet()) {
+        for (Map.Entry<Identifier, WeatherData> entry : SEASONS_WEATHER_MAP.entrySet()) {
             PackOutput.PathProvider pathProvider = getPath();
 
             futures.add(DataProvider.saveStable(cache,

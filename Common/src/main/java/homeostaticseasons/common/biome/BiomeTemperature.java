@@ -203,7 +203,7 @@ public class BiomeTemperature {
     private double getSunRadiation(Level level, BlockPos blockPos) {
         double radiation = 0.0;
         double sunlight = level.getBrightness(LightLayer.SKY, blockPos.above()) - level.getSkyDarken();
-        float f = level.getSunAngle(1.0F);
+        float f = getSunAngle(level);
 
         if (sunlight > 0) {
             float f1 = f < (float)Math.PI ? 0.0F : ((float)Math.PI * 2F);
@@ -214,6 +214,16 @@ public class BiomeTemperature {
         radiation += sunlight * 100;
 
         return Math.max(radiation, 0);
+    }
+
+    private static float getSunAngle(Level level) {
+        return timeOfDay(level) * ((float)Math.PI * 2F);
+    }
+
+    private static float timeOfDay(Level level) {
+        double d0 = Mth.frac(level.getDayTime() / 24000.0 - 0.25);
+        double d1 = 0.5 - Math.cos(d0 * Math.PI) / 2.0;
+        return (float)(d0 * 2.0 + d1) / 3.0F;
     }
 
     /*

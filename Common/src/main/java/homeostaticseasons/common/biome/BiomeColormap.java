@@ -17,7 +17,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.biome.Biome;
 
@@ -25,11 +25,11 @@ import homeostaticseasons.util.ColorHelper;
 
 import static technology.roughness.whitenoise.util.ResourceLocationHelper.parse;
 
-public record BiomeColormap(ResourceLocation type, int grassColor, float grassSaturation, int foliageColor,
+public record BiomeColormap(Identifier type, int grassColor, float grassSaturation, int foliageColor,
                             float foliageSaturation, int birchColor) {
 
     public static final Codec<BiomeColormap> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        ResourceLocation.CODEC.fieldOf("type").forGetter(BiomeColormap::type),
+        Identifier.CODEC.fieldOf("type").forGetter(BiomeColormap::type),
         Codec.INT.fieldOf("grass_color").forGetter(BiomeColormap::grassColor),
         Codec.FLOAT.fieldOf("grass_saturation").forGetter(BiomeColormap::grassSaturation),
         Codec.INT.fieldOf("foliage_color").forGetter(BiomeColormap::foliageColor),
@@ -37,7 +37,7 @@ public record BiomeColormap(ResourceLocation type, int grassColor, float grassSa
         Codec.INT.fieldOf("birch_color").forGetter(BiomeColormap::birchColor)
     ).apply(instance, BiomeColormap::new));
 
-    public BiomeColormap(ResourceLocation type, int grassColor, int foliageColor, int birchColor) {
+    public BiomeColormap(Identifier type, int grassColor, int foliageColor, int birchColor) {
         this(type, grassColor, -1, foliageColor, -1, birchColor);
     }
 

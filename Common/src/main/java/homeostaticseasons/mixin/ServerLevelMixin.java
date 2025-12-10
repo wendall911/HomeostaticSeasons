@@ -5,7 +5,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
@@ -15,6 +14,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.storage.WritableLevelData;
 
@@ -55,7 +55,7 @@ public abstract class ServerLevelMixin extends Level implements WorldGenLevel {
         }
 
         if (this.isRaining()) {
-            int i = this.getGameRules().getInt(GameRules.RULE_SNOW_ACCUMULATION_HEIGHT);
+            int i = this.getGameRules().get(GameRules.MAX_SNOW_ACCUMULATION_HEIGHT);
 
             Biome.Precipitation biome$precipitation = SeasonWeather.getPrecipitationType(biome, blockpos, this.getLevel());
 

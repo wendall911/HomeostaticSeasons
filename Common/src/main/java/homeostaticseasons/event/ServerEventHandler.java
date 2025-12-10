@@ -1,7 +1,7 @@
 package homeostaticseasons.event;
 
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.storage.ServerLevelData;
 
 import homeostaticseasons.api.HomeostaticSeasonsAPI;
@@ -33,8 +33,7 @@ public class ServerEventHandler {
 
     public static void onLevelLoad(ServerLevel level) {
         if (SeasonWeather.isValid(level) && Common.snowAccumulationHeight() > 1) {
-            level.getGameRules().getRule(GameRules.RULE_SNOW_ACCUMULATION_HEIGHT)
-                .set(Common.snowAccumulationHeight(), level.getServer());
+            level.getGameRules().set(GameRules.MAX_SNOW_ACCUMULATION_HEIGHT, Common.snowAccumulationHeight(), level.getServer());
         }
 
         if (ConfigHandler.Common.seasonChangeMethod() == SeasonChangeMethod.CONFIGURED

@@ -3,6 +3,8 @@ plugins {
     id 'net.neoforged.moddev'
 }
 
+def identifier = "${mod_id}-${minecraft_version}-neoforge"
+
 neoForge {
     version = neoforge_version
     validateAccessTransformers = true
@@ -10,10 +12,6 @@ neoForge {
     def at = project(':Common').file('src/main/resources/META-INF/accesstransformer.cfg')
     if (at.exists()) {
         accessTransformers.from(at.absolutePath)
-    }
-    parchment {
-        minecraftVersion = mappings_minecraft_version
-        mappingsVersion = mappings_version
     }
     runs {
         configureEach {
@@ -49,14 +47,14 @@ dependencies {
     }
     else {
         runtimeOnly group: 'com.github.wendall911.homeostatic', name: "homeostatic-${minecraft_version}-neoforge", version: "${homeostatic_version}"
-        runtimeOnly "curse.maven:glitchcore-955399:${glitch_core_neoforge_version}"
+        //runtimeOnly "curse.maven:glitchcore-955399:${glitch_core_neoforge_version}"
         //runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
         //runtimeOnly "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
-        runtimeOnly "curse.maven:simpletextoverlay-321283:${simpletextoverlay_neoforge_version}"
+        //runtimeOnly "curse.maven:simpletextoverlay-321283:${simpletextoverlay_neoforge_version}"
         //runtimeOnly "dev.gigaherz.sewingkit:SewingKit-${minecraft_version}:${sewingkit_version}"
         //runtimeOnly "curse.maven:configured-457570:4462839"
-        runtimeOnly "curse.maven:biomesoplenty-220318:${bop_neoforge_version}"
-        runtimeOnly "curse.maven:terrablender-940057:${terrablender_neoforge_version}"
+        //runtimeOnly "curse.maven:biomesoplenty-220318:${bop_neoforge_version}"
+        //runtimeOnly "curse.maven:terrablender-940057:${terrablender_neoforge_version}"
         //runtimeOnly "curse.maven:regions-659110:${regions_neoforge_version}"
         //runtimeOnly "curse.maven:terralith-513688:5512077"
         //runtimeOnly "curse.maven:primalwinter-393321:4575861"
@@ -78,7 +76,7 @@ sourceSets.main.resources {
 }
 
 def changelogFile = project(":").projectDir.toString() + '/build/libs/changelog.txt'
-def publishFile = project(":").projectDir.toString() + "/NeoForge/build/libs/${archivesBaseName}-${version}.jar"
+def publishFile = project(":").projectDir.toString() + "/NeoForge/build/libs/${identifier}-${version}.jar"
 def display_name = "${project.name} ${minecraft_version}-${version}"
 def display_version = "${minecraft_version}-${version}"
 
@@ -157,7 +155,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId project.group
-            artifactId project.archivesBaseName
+            artifactId identifier
             version project.version
             // This gives us the built version NeoForge requires
             artifact jar

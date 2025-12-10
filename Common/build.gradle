@@ -6,6 +6,8 @@ plugins {
     id 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
 }
 
+def identifier = "${mod_id}-${minecraft_version}-common"
+
 neoForge {
     neoFormVersion = neo_form_version
     validateAccessTransformers = true
@@ -13,10 +15,6 @@ neoForge {
     def at = file('src/main/resources/META-INF/accesstransformer.cfg')
     if (at.exists()) {
         accessTransformers.from(at.absolutePath)
-    }
-    parchment {
-        minecraftVersion = mappings_minecraft_version
-        mappingsVersion = mappings_version
     }
 }
 
@@ -78,7 +76,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId project.group
-            artifactId project.archivesBaseName
+            artifactId identifier
             version project.version
             from components.java
         }

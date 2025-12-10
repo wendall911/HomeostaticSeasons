@@ -12,7 +12,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 
 import climatesettings.network.IPacket;
@@ -24,7 +24,7 @@ import static homeostaticseasons.HomeostaticSeasons.prefix;
 
 public record SyncBiomeColormap(Tag data) implements IPacket {
 
-    public static final ResourceLocation ID = prefix("sync_biome_colormap");
+    public static final Identifier ID = prefix("sync_biome_colormap");
     public static final StreamCodec<RegistryFriendlyByteBuf, SyncBiomeColormap> CODEC = StreamCodec.composite(
         ByteBufCodecs.TAG,
         SyncBiomeColormap::data,

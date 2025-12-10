@@ -337,7 +337,7 @@ public class ConfigHandler {
         }
 
         public static boolean isValidDimension(ResourceKey<Level> dimensionKey) {
-            return COMMON.whitelistDimensions.get().contains(dimensionKey.location().toString());
+            return COMMON.whitelistDimensions.get().contains(dimensionKey.identifier().toString());
         }
 
         private static Supplier<List<? extends String>> getDefaultWhitelistDimensions() {

@@ -15,7 +15,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.FileToIdConverter;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -37,8 +37,8 @@ import static homeostaticseasons.HomeostaticSeasons.prefix;
 
 public class BiomeColormapManager extends SimpleJsonResourceReloadListener<JsonElement> {
 
-    private static final Map<ResourceLocation, BiomeColormap> COLORMAPS = new java.util.HashMap<>();
-    private  static final Map<ResourceLocation, ColormapType> BIOMETYPE_TO_COLORMAPTYPE = new java.util.HashMap<>();
+    private static final Map<Identifier, BiomeColormap> COLORMAPS = new java.util.HashMap<>();
+    private  static final Map<Identifier, ColormapType> BIOMETYPE_TO_COLORMAPTYPE = new java.util.HashMap<>();
 
     private static final Gson GSON = new GsonBuilder().registerTypeAdapter(BiomeColormap.class, new BiomeColormap.Serializer()).create();
 
@@ -57,7 +57,7 @@ public class BiomeColormapManager extends SimpleJsonResourceReloadListener<JsonE
         }
     }
 
-    private static ResourceLocation getSerializedName(BiomeColormap.ColormapType type, Season season) {
+    private static Identifier getSerializedName(BiomeColormap.ColormapType type, Season season) {
         return prefix(season.getSerializedName() + "_" + type.toString());
     }
 
@@ -65,7 +65,7 @@ public class BiomeColormapManager extends SimpleJsonResourceReloadListener<JsonE
         return GSON.toJsonTree(biomeColormap);
     }
 
-    public static BiomeColormap getBiomeColormap(ResourceLocation type) {
+    public static BiomeColormap getBiomeColormap(Identifier type) {
         return COLORMAPS.get(type);
     }
 
@@ -77,7 +77,7 @@ public class BiomeColormapManager extends SimpleJsonResourceReloadListener<JsonE
 
     public static BiomeColormap.ColormapType getColormapType(Holder<Biome> biome) {
         try {
-            ResourceLocation biomeCategory = ClimateSettings.prefix(BiomeCategoryManager.getBiomeCategory(biome).toString());
+            Identifier biomeCategory = ClimateSettings.prefix(BiomeCategoryManager.getBiomeCategory(biome).toString());
 
             return BIOMETYPE_TO_COLORMAPTYPE.getOrDefault(biomeCategory, ColormapType.NORMAL);
         }
@@ -97,10 +97,10 @@ public class BiomeColormapManager extends SimpleJsonResourceReloadListener<JsonE
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, JsonElement> pObject, @NotNull ResourceManager resourceManager, @NotNull ProfilerFiller profilerFiller) {
+    protected void apply(Map<Identifier, JsonElement> pObject, @NotNull ResourceManager resourceManager, @NotNull ProfilerFiller profilerFiller) {
         COLORMAPS.clear();
 
-        for (Map.Entry<ResourceLocation, JsonElement> entry : pObject.entrySet()) {
+        for (Map.Entry<Identifier, JsonElement> entry : pObject.entrySet()) {
             try {
                 BiomeColormap biomeColormap = GSON.fromJson(entry.getValue(), BiomeColormap.class);
 
