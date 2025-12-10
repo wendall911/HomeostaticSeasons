@@ -52,7 +52,7 @@ dependencies {
         runtimeOnly "curse.maven:glitchcore-955399:${glitch_core_neoforge_version}"
         //runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
         //runtimeOnly "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
-        //runtimeOnly "curse.maven:simpletextoverlay-321283:${simpletextoverlay_neoforge_version}"
+        runtimeOnly "curse.maven:simpletextoverlay-321283:${simpletextoverlay_neoforge_version}"
         //runtimeOnly "dev.gigaherz.sewingkit:SewingKit-${minecraft_version}:${sewingkit_version}"
         //runtimeOnly "curse.maven:configured-457570:4462839"
         runtimeOnly "curse.maven:biomesoplenty-220318:${bop_neoforge_version}"

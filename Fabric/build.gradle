@@ -41,7 +41,7 @@ dependencies {
         //modLocalRuntime "curse.maven:regions-659110:${regions_fabric_version}"
         modLocalRuntime "org.ladysnake.cardinal-components-api:cardinal-components-base:${cardinal_components_version}"
         modLocalRuntime "org.ladysnake.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
-        //modLocalRuntime "curse.maven:simpletextoverlay-321283:${simpletextoverlay_fabric_version}"
+        modLocalRuntime "curse.maven:simpletextoverlay-321283:${simpletextoverlay_fabric_version}"
         //modLocalRuntime "curse.maven:byg-1070751:${byg_fabric_version}"
         //modLocalRuntime "curse.maven:tyg-962544:${tyg_fabric_version}"
         //modLocalRuntime "curse.maven:corgilib-693313:${corgilib_fabric_version}"
