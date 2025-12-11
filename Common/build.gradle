@@ -73,7 +73,6 @@ tasks.generateUpdates.mustRunAfter('jar')
 
 tasks.build.dependsOn('changelog', 'generateUpdates')
 
-
 publishing {
     publications {
         mavenJava(MavenPublication) {
