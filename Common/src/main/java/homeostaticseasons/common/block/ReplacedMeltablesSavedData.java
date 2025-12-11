@@ -16,12 +16,12 @@ import homeostaticseasons.HomeostaticSeasons;
 
 public class ReplacedMeltablesSavedData extends SavedData {
 
-    Long2ObjectArrayMap<Long2ObjectArrayMap<BlockState>> cunkToReplacedMeltablesMap = new Long2ObjectArrayMap<>();
+    Long2ObjectArrayMap<Long2ObjectArrayMap<BlockState>> chunkToReplacedMeltablesMap = new Long2ObjectArrayMap<>();
 
     @Override
     @NotNull
     public CompoundTag save(@NotNull CompoundTag compoundTag, @NotNull Provider provider) {
-        cunkToReplacedMeltablesMap.long2ObjectEntrySet().fastForEach(entry -> {
+        chunkToReplacedMeltablesMap.long2ObjectEntrySet().fastForEach(entry -> {
             if (!entry.getValue().isEmpty()) {
                 CompoundTag innerTag = new CompoundTag();
 
@@ -40,7 +40,7 @@ public class ReplacedMeltablesSavedData extends SavedData {
 
     public BlockState getReplaced(BlockPos pos) {
         ChunkPos chunkPos = new ChunkPos(pos);
-        Long2ObjectArrayMap<BlockState> replacedMeltablesInChunk = cunkToReplacedMeltablesMap.get(chunkPos.toLong());
+        Long2ObjectArrayMap<BlockState> replacedMeltablesInChunk = chunkToReplacedMeltablesMap.get(chunkPos.toLong());
 
         return replacedMeltablesInChunk != null ? replacedMeltablesInChunk.get(pos.asLong()) : null;
     }
@@ -48,7 +48,7 @@ public class ReplacedMeltablesSavedData extends SavedData {
     public void setReplaced(BlockPos pos, BlockState replacedState) {
         ChunkPos chunkPos = new ChunkPos(pos);
         long chunkKey = chunkPos.toLong();
-        Long2ObjectArrayMap<BlockState> replacedMeltablesInChunk = cunkToReplacedMeltablesMap.get(chunkKey);
+        Long2ObjectArrayMap<BlockState> replacedMeltablesInChunk = chunkToReplacedMeltablesMap.get(chunkKey);
 
         if (replacedMeltablesInChunk != null) {
             if (replacedState != null) {
@@ -57,7 +57,7 @@ public class ReplacedMeltablesSavedData extends SavedData {
             else {
                 replacedMeltablesInChunk.remove(pos.asLong());
                 if (replacedMeltablesInChunk.isEmpty()) {
-                    cunkToReplacedMeltablesMap.remove(chunkKey);
+                    chunkToReplacedMeltablesMap.remove(chunkKey);
                 }
             }
         }
@@ -65,7 +65,7 @@ public class ReplacedMeltablesSavedData extends SavedData {
             Long2ObjectArrayMap<BlockState> newMap = new Long2ObjectArrayMap<>();
 
             newMap.put(pos.asLong(), replacedState);
-            cunkToReplacedMeltablesMap.put(chunkKey, newMap);
+            chunkToReplacedMeltablesMap.put(chunkKey, newMap);
         }
 
         setDirty();
@@ -87,7 +87,7 @@ public class ReplacedMeltablesSavedData extends SavedData {
                     });
                 });
 
-                savedData.cunkToReplacedMeltablesMap.put(chunkKey, posToBlockStateMap);
+                savedData.chunkToReplacedMeltablesMap.put(chunkKey, posToBlockStateMap);
             }
             catch (NumberFormatException e) {
                 HomeostaticSeasons.LOGGER.error("Failed to load replaced meltables data for chunk key: {}", key, e);
