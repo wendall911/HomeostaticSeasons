@@ -15,7 +15,7 @@ import net.minecraft.resources.Identifier;
 
 import homeostaticseasons.HomeostaticSeasons;
 import homeostaticseasons.api.Season;
-import homeostaticseasons.common.season.WeatherData;
+import homeostaticseasons.common.season.WeatherFrequencyData;
 import homeostaticseasons.common.season.WeatherDataManager;
 
 import static homeostaticseasons.HomeostaticSeasons.prefix;
@@ -24,7 +24,7 @@ import static net.minecraft.server.level.ServerLevel.THUNDER_DELAY;
 
 public class WeatherDataProvider implements DataProvider {
 
-    private final Map<Identifier, WeatherData> SEASONS_WEATHER_MAP = new HashMap<>();
+    private final Map<Identifier, WeatherFrequencyData> SEASONS_WEATHER_MAP = new HashMap<>();
     private final PackOutput packOutput;
 
     public WeatherDataProvider(final PackOutput packOutput) {
@@ -32,21 +32,21 @@ public class WeatherDataProvider implements DataProvider {
     }
 
     protected void registerWeatherData() {
-        add(prefix(Season.EARLY_SPRING.getSerializedName()), new WeatherData(RAIN_DELAY.getMinValue(), 65000, THUNDER_DELAY.getMinValue(), THUNDER_DELAY.getMaxValue()));
-        add(prefix(Season.MID_SPRING.getSerializedName()), new WeatherData(RAIN_DELAY.getMinValue(), 36000, THUNDER_DELAY.getMinValue(), 96000));
-        add(prefix(Season.LATE_SPRING.getSerializedName()), new WeatherData(RAIN_DELAY.getMinValue(), 65000, THUNDER_DELAY.getMinValue(), 84000));
-        add(prefix(Season.EARLY_SUMMER.getSerializedName()), new WeatherData(RAIN_DELAY.getMinValue(), RAIN_DELAY.getMaxValue(), THUNDER_DELAY.getMinValue(), 72000));
-        add(prefix(Season.MID_SUMMER.getSerializedName()), new WeatherData(RAIN_DELAY.getMinValue(), RAIN_DELAY.getMaxValue(), THUNDER_DELAY.getMinValue(), 64000));
-        add(prefix(Season.LATE_SUMMER.getSerializedName()), new WeatherData(RAIN_DELAY.getMinValue(), RAIN_DELAY.getMaxValue(), THUNDER_DELAY.getMinValue(), 96000));
-        add(prefix(Season.EARLY_AUTUMN.getSerializedName()), new WeatherData(RAIN_DELAY.getMinValue(), RAIN_DELAY.getMaxValue(), THUNDER_DELAY.getMinValue(), THUNDER_DELAY.getMaxValue()));
-        add(prefix(Season.MID_AUTUMN.getSerializedName()), new WeatherData(RAIN_DELAY.getMinValue(), RAIN_DELAY.getMaxValue(), THUNDER_DELAY.getMinValue(), THUNDER_DELAY.getMaxValue()));
-        add(prefix(Season.LATE_AUTUMN.getSerializedName()), new WeatherData(RAIN_DELAY.getMinValue(), RAIN_DELAY.getMaxValue(), THUNDER_DELAY.getMinValue(), THUNDER_DELAY.getMaxValue()));
-        add(prefix(Season.EARLY_WINTER.getSerializedName()), new WeatherData(RAIN_DELAY.getMinValue(), 90000, -1, -1));
-        add(prefix(Season.MID_WINTER.getSerializedName()), new WeatherData(RAIN_DELAY.getMinValue(), 90000, -1, -1));
-        add(prefix(Season.LATE_WINTER.getSerializedName()), new WeatherData(RAIN_DELAY.getMinValue(), 90000, -1, -1));
+        add(prefix(Season.EARLY_SPRING.getSerializedName()), new WeatherFrequencyData(RAIN_DELAY.minInclusive(), 65000, THUNDER_DELAY.minInclusive(), THUNDER_DELAY.maxInclusive()));
+        add(prefix(Season.MID_SPRING.getSerializedName()), new WeatherFrequencyData(RAIN_DELAY.minInclusive(), 36000, THUNDER_DELAY.minInclusive(), 96000));
+        add(prefix(Season.LATE_SPRING.getSerializedName()), new WeatherFrequencyData(RAIN_DELAY.minInclusive(), 65000, THUNDER_DELAY.minInclusive(), 84000));
+        add(prefix(Season.EARLY_SUMMER.getSerializedName()), new WeatherFrequencyData(RAIN_DELAY.minInclusive(), RAIN_DELAY.maxInclusive(), THUNDER_DELAY.minInclusive(), 72000));
+        add(prefix(Season.MID_SUMMER.getSerializedName()), new WeatherFrequencyData(RAIN_DELAY.minInclusive(), RAIN_DELAY.maxInclusive(), THUNDER_DELAY.minInclusive(), 64000));
+        add(prefix(Season.LATE_SUMMER.getSerializedName()), new WeatherFrequencyData(RAIN_DELAY.minInclusive(), RAIN_DELAY.maxInclusive(), THUNDER_DELAY.minInclusive(), 96000));
+        add(prefix(Season.EARLY_AUTUMN.getSerializedName()), new WeatherFrequencyData(RAIN_DELAY.minInclusive(), RAIN_DELAY.maxInclusive(), THUNDER_DELAY.minInclusive(), THUNDER_DELAY.maxInclusive()));
+        add(prefix(Season.MID_AUTUMN.getSerializedName()), new WeatherFrequencyData(RAIN_DELAY.minInclusive(), RAIN_DELAY.maxInclusive(), THUNDER_DELAY.minInclusive(), THUNDER_DELAY.maxInclusive()));
+        add(prefix(Season.LATE_AUTUMN.getSerializedName()), new WeatherFrequencyData(RAIN_DELAY.minInclusive(), RAIN_DELAY.maxInclusive(), THUNDER_DELAY.minInclusive(), THUNDER_DELAY.maxInclusive()));
+        add(prefix(Season.EARLY_WINTER.getSerializedName()), new WeatherFrequencyData(RAIN_DELAY.minInclusive(), 90000, -1, -1));
+        add(prefix(Season.MID_WINTER.getSerializedName()), new WeatherFrequencyData(RAIN_DELAY.minInclusive(), 90000, -1, -1));
+        add(prefix(Season.LATE_WINTER.getSerializedName()), new WeatherFrequencyData(RAIN_DELAY.minInclusive(), 90000, -1, -1));
     }
 
-    protected void add(Identifier seasonLoc, WeatherData weatherData) {
+    protected void add(Identifier seasonLoc, WeatherFrequencyData weatherData) {
         SEASONS_WEATHER_MAP.put(seasonLoc, weatherData);
     }
 
@@ -57,7 +57,7 @@ public class WeatherDataProvider implements DataProvider {
 
         registerWeatherData();
 
-        for (Map.Entry<Identifier, WeatherData> entry : SEASONS_WEATHER_MAP.entrySet()) {
+        for (Map.Entry<Identifier, WeatherFrequencyData> entry : SEASONS_WEATHER_MAP.entrySet()) {
             PackOutput.PathProvider pathProvider = getPath();
 
             futures.add(DataProvider.saveStable(cache,

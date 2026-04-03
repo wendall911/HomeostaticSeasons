@@ -3,7 +3,7 @@ package homeostaticseasons.event;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLevelEvents;
 
 import climatesettings.common.biome.BiomeCategoryManager;
 import climatesettings.common.biome.BiomeTypeDataManager;
@@ -18,7 +18,7 @@ public class ServerEventListener {
             (dispatcher, registryAccess, environment) -> SeasonCommand.register(dispatcher)
         );
 
-        ServerTickEvents.END_WORLD_TICK.register(ServerEventHandler::onLevelTick);
+        ServerTickEvents.END_LEVEL_TICK.register(ServerEventHandler::onLevelTick);
         ServerTickEvents.END_SERVER_TICK.register((minecraftServer) -> {
             SnowAndIceEventHandler.onEndServerTick();
         });
@@ -29,7 +29,7 @@ public class ServerEventListener {
             BiomeColormapManager.syncWithClient(player);
         });
 
-        ServerWorldEvents.LOAD.register((server, level) -> {
+        ServerLevelEvents.LOAD.register((server, level) -> {
             ServerEventHandler.onLevelLoad(level);
         });
     }

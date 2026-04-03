@@ -1,5 +1,7 @@
 package homeostaticseasons.event;
 
+import java.util.List;
+
 import net.minecraft.world.level.block.Blocks;
 
 import net.neoforged.api.distmarker.Dist;
@@ -13,8 +15,8 @@ import homeostaticseasons.common.block.BirchFoliageTinter;
 public class ColorEventListener {
 
     @SubscribeEvent
-    public static void onRegisterColorHandlers(RegisterColorHandlersEvent.Block event) {
-        event.register(BirchFoliageTinter::getBirchTintedColor, Blocks.BIRCH_LEAVES);
+    public static void onRegisterColorHandlers(RegisterColorHandlersEvent.BlockTintSources event) {
+        event.register(List.of(BirchFoliageTinter.getBirchTintSource()), Blocks.BIRCH_LEAVES);
     }
 
 

@@ -1,7 +1,7 @@
 package homeostaticseasons.common.season;
 
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.storage.ServerLevelData;
+import net.minecraft.world.level.saveddata.WeatherData;
 
 import homeostaticseasons.api.Season;
 import homeostaticseasons.api.SeasonWeather;
@@ -13,28 +13,28 @@ public class Weather {
             return;
         }
 
-        WeatherData weatherData = WeatherDataManager.getWeatherData(season);
-        ServerLevelData serverLevelData = (ServerLevelData) level.getLevelData();
+        WeatherFrequencyData weatherFrequencyData = WeatherDataManager.getWeatherData(season);
+        WeatherData weatherData = level.getWeatherData();
 
-        if (weatherData != null) {
-            if (weatherData.canRain()) {
-                if (!serverLevelData.isRaining() && serverLevelData.getRainTime() > weatherData.maxRainTime()) {
-                    serverLevelData.setRainTime(
-                        level.random.nextInt(weatherData.maxRainTime() - weatherData.minRainTime()) + weatherData.minRainTime());
+        if (weatherFrequencyData != null) {
+            if (weatherFrequencyData.canRain()) {
+                if (!weatherData.isRaining() && weatherData.getRainTime() > weatherFrequencyData.maxRainTime()) {
+                    weatherData.setRainTime(
+                        level.getRandom().nextInt(weatherFrequencyData.maxRainTime() - weatherFrequencyData.minRainTime()) + weatherFrequencyData.minRainTime());
                 }
             }
-            else if (serverLevelData.isRaining()) {
-                serverLevelData.setRaining(false);
+            else if (weatherData.isRaining()) {
+                weatherData.setRaining(false);
             }
 
-            if (weatherData.canThunder()) {
-                if (!serverLevelData.isThundering() && serverLevelData.getThunderTime() > weatherData.maxThunderTime()) {
-                    serverLevelData.setThunderTime(
-                        level.random.nextInt(weatherData.maxThunderTime() - weatherData.minThunderTime()) + weatherData.minThunderTime());
+            if (weatherFrequencyData.canThunder()) {
+                if (!weatherData.isThundering() && weatherData.getThunderTime() > weatherFrequencyData.maxThunderTime()) {
+                    weatherData.setThunderTime(
+                        level.getRandom().nextInt(weatherFrequencyData.maxThunderTime() - weatherFrequencyData.minThunderTime()) + weatherFrequencyData.minThunderTime());
                 }
             }
-            else if (serverLevelData.isThundering()) {
-                serverLevelData.setThundering(false);
+            else if (weatherData.isThundering()) {
+                weatherData.setThundering(false);
             }
         }
     }

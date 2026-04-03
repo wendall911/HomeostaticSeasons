@@ -6,10 +6,11 @@ import java.util.Map;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.color.block.BlockTintSource;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
@@ -24,6 +25,21 @@ import homeostaticseasons.util.ColorHelper;
 public class BirchFoliageTinter {
 
     private static final Map<BlockState, Integer> cache = new HashMap<>();
+
+    public static BlockTintSource getBirchTintSource() {
+        return new BlockTintSource() {
+
+            @Override
+            public int color(BlockState blockState) {
+                return getBirchTintedColor(blockState, null, null, 0);
+            }
+
+            @Override
+            public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
+                return getBirchTintedColor(state, level, pos, 0);
+            }
+        };
+    }
 
     public static int getBirchTintedColor(BlockState blockState, BlockAndTintGetter levelGetter, @Nullable BlockPos pos, int tintIndex) {
         if (cache.containsKey(blockState)) {

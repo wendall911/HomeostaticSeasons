@@ -16,7 +16,7 @@ public class HomeostaticSeasonsFabric implements ModInitializer {
     public void onInitialize() {
         ServerEventListener.init();
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new FabricBiomeColormapManager());
-        PayloadTypeRegistry.playS2C().register(SyncBiomeColormap.TYPE, SyncBiomeColormap.CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(SyncBiomeColormap.TYPE, SyncBiomeColormap.CODEC);
     }
 
 }

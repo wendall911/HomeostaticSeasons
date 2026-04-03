@@ -1,13 +1,17 @@
 package homeostaticseasons.command;
 
+import java.util.Optional;
+
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.clock.WorldClock;
 import net.minecraft.world.level.storage.ServerLevelData;
 
 import homeostaticseasons.HomeostaticSeasons;
@@ -89,33 +93,34 @@ public class SeasonCommand {
 
     private static int setSeasonTime(CommandSourceStack source, Season season) {
         for (ServerLevel serverlevel : source.getServer().getAllLevels()) {
-            ServerLevelData levelData = Services.PLATFORM.getServerLevelData(serverlevel);
             long time = HomeostaticSeasonsAPI.getSeasonTime(serverlevel, season);
+            Optional<Holder<WorldClock>> clockHolder = serverlevel.dimensionType().defaultClock();
 
-            if (time != -1L) {
-                levelData.setDayTime(time);
+            if (clockHolder.isPresent() && time != -1L) {
+                serverlevel.getServer().clockManager().setTotalTicks(clockHolder.get(), time);
                 source.sendSuccess(() -> Component.translatable("commands.time.set", time), true);
             }
         }
 
-        return (int)(source.getLevel().getDayTime());
+        return (int)(source.getLevel().getDefaultClockTime());
     }
 
     private static int skipToSeason(CommandSourceStack source, Season season) {
-        long currentTime = source.getLevel().getDayTime();
+        long currentTime = source.getLevel().getDefaultClockTime();
 
         for (ServerLevel serverlevel : source.getServer().getAllLevels()) {
             ServerLevelData levelData = Services.PLATFORM.getServerLevelData(serverlevel);
             long timeUntilSeason = HomeostaticSeasonsAPI.getTimeUntilSeason(serverlevel, season);
+            Optional<Holder<WorldClock>> clockHolder = serverlevel.dimensionType().defaultClock();
 
-            if (timeUntilSeason != -1L) {
+            if (clockHolder.isPresent() && timeUntilSeason != -1L) {
                 long newTime = currentTime + timeUntilSeason;
-                levelData.setDayTime(newTime);
+                serverlevel.getServer().clockManager().setTotalTicks(clockHolder.get(), newTime);
                 source.sendSuccess(() -> Component.translatable("commands.time.set", newTime), true);
             }
         }
 
-        return (int)(source.getLevel().getDayTime() % 24000L);
+        return (int)(source.getLevel().getDefaultClockTime() % 24000L);
     }
 
     private static boolean isConfigured() {

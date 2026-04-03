@@ -12,15 +12,15 @@ import com.google.gson.JsonSerializer;
 
 import net.minecraft.util.GsonHelper;
 
-public record WeatherData(int minRainTime, int maxRainTime, int minThunderTime, int maxThunderTime) {
+public record WeatherFrequencyData(int minRainTime, int maxRainTime, int minThunderTime, int maxThunderTime) {
 
-    public static class Serializer implements JsonDeserializer<WeatherData>, JsonSerializer<WeatherData> {
+    public static class Serializer implements JsonDeserializer<WeatherFrequencyData>, JsonSerializer<WeatherFrequencyData> {
 
         @Override
-        public WeatherData deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        public WeatherFrequencyData deserialize(JsonElement jsonElement, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject json = GsonHelper.convertToJsonObject(jsonElement, "data");
 
-            return new WeatherData(
+            return new WeatherFrequencyData(
                 GsonHelper.getAsInt(json, "min_rain_time"),
                 GsonHelper.getAsInt(json, "max_rain_time"),
                 GsonHelper.getAsInt(json, "min_thunder_time"),
@@ -29,7 +29,7 @@ public record WeatherData(int minRainTime, int maxRainTime, int minThunderTime, 
         }
 
         @Override
-        public JsonElement serialize(WeatherData weatherData, Type typeOfSrc, JsonSerializationContext context) {
+        public JsonElement serialize(WeatherFrequencyData weatherData, Type typeOfSrc, JsonSerializationContext context) {
             JsonObject json = new JsonObject();
 
             json.addProperty("min_rain_time", weatherData.minRainTime);

@@ -8,9 +8,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
+
+import homeostaticseasons.HomeostaticSeasons;
 
 public class ReplacedMeltablesSavedData extends SavedData {
 
@@ -23,7 +26,8 @@ public class ReplacedMeltablesSavedData extends SavedData {
                     data.replacedMeltablesMap.long2ObjectEntrySet().stream().map(BlockStateWithPosition::from).toList())
         ).apply(instance, ReplacedMeltablesSavedData::new)
     );
-    public static final SavedDataType<ReplacedMeltablesSavedData> TYPE = new SavedDataType<>("homeostaticseasons_replaced_meltables", ReplacedMeltablesSavedData::new, CODEC, null);
+    public static final Identifier ID = Identifier.fromNamespaceAndPath(HomeostaticSeasons.MODID, "replaced_meltables");
+    public static final SavedDataType<ReplacedMeltablesSavedData> TYPE = new SavedDataType<>(ID, ReplacedMeltablesSavedData::new, CODEC, null);
 
     private final Long2ObjectLinkedOpenHashMap<BlockState> replacedMeltablesMap = new Long2ObjectLinkedOpenHashMap<>();
 

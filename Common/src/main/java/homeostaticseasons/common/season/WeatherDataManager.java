@@ -22,19 +22,19 @@ import homeostaticseasons.api.Season;
 
 public class WeatherDataManager extends SimpleJsonResourceReloadListener<JsonElement> {
 
-    private static final Map<Season, WeatherData> WEATHER_DATA = new HashMap<>();
+    private static final Map<Season, WeatherFrequencyData> WEATHER_DATA = new HashMap<>();
 
-    private static final Gson GSON = new GsonBuilder().registerTypeAdapter(WeatherData.class, new WeatherData.Serializer()).create();
+    private static final Gson GSON = new GsonBuilder().registerTypeAdapter(WeatherFrequencyData.class, new WeatherFrequencyData.Serializer()).create();
 
     public WeatherDataManager() {
         super(ExtraCodecs.JSON, FileToIdConverter.json("seasons/weather"));
     }
 
-    public static WeatherData getWeatherData(Season season) {
+    public static WeatherFrequencyData getWeatherData(Season season) {
         return WEATHER_DATA.getOrDefault(season, null);
     }
 
-    public static JsonElement parseWeatherData(WeatherData weatherData) {
+    public static JsonElement parseWeatherData(WeatherFrequencyData weatherData) {
         return GSON.toJsonTree(weatherData);
     }
 
@@ -44,7 +44,7 @@ public class WeatherDataManager extends SimpleJsonResourceReloadListener<JsonEle
 
         for (Map.Entry<Identifier, JsonElement> entry : pObject.entrySet()) {
             try {
-                WeatherData weatherData = GSON.fromJson(entry.getValue(), WeatherData.class);
+                WeatherFrequencyData weatherData = GSON.fromJson(entry.getValue(), WeatherFrequencyData.class);
 
                 WEATHER_DATA.put(Season.valueOf(entry.getKey().getPath().toUpperCase(Locale.ROOT)), weatherData);
             }

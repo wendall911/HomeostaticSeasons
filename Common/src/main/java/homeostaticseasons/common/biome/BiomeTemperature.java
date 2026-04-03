@@ -221,7 +221,7 @@ public class BiomeTemperature {
     }
 
     private static float timeOfDay(Level level) {
-        double d0 = Mth.frac(level.getDayTime() / 24000.0 - 0.25);
+        double d0 = Mth.frac(level.getDefaultClockTime() / 24000.0 - 0.25);
         double d1 = 0.5 - Math.cos(d0 * Math.PI) / 2.0;
         return (float)(d0 * 2.0 + d1) / 3.0F;
     }
@@ -268,7 +268,7 @@ public class BiomeTemperature {
     }
 
     private static float getDayNightOffset(Level level, Holder<Biome> biomeHolder, double relativeHumidity) {
-        long time = (level.getDayTime() % 24000);
+        long time = (level.getDefaultClockTime() % 24000);
         HomeostaticClimateSettings climateSettings = CLIMATE.getClimateSettings(biomeHolder);
         BiomeTypeData biomeTypeData = BiomeTypeDataManager.getDataForBiome(biomeHolder);
         float maxTemp = biomeTypeData.getDayNightOffset(climateSettings.getPrecipitationType());

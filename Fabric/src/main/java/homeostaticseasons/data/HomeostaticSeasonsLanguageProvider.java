@@ -2,7 +2,7 @@ package homeostaticseasons.data;
 
 import java.util.concurrent.CompletableFuture;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 
 import net.minecraft.core.HolderLookup.Provider;
@@ -13,7 +13,7 @@ import homeostaticseasons.common.Translations;
 
 public class HomeostaticSeasonsLanguageProvider extends FabricLanguageProvider {
 
-    protected HomeostaticSeasonsLanguageProvider(FabricDataOutput dataOutput, CompletableFuture<Provider> registryLookup) {
+    protected HomeostaticSeasonsLanguageProvider(FabricPackOutput dataOutput, CompletableFuture<Provider> registryLookup) {
         super(dataOutput, "en_us", registryLookup);
     }
 

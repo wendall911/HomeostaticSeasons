@@ -1,6 +1,10 @@
 package homeostaticseasons.event;
 
+import java.util.Optional;
+
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.clock.WorldClock;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.storage.ServerLevelData;
 
@@ -21,7 +25,7 @@ public class ServerEventHandler {
      * Check every second to see if the season has changed, and update the weather accordingly.
      */
     public static void onLevelTick(ServerLevel level) {
-        if (SeasonWeather.isValid(level) && level.getDayTime() % 20 == 0) {
+        if (SeasonWeather.isValid(level) && level.getDefaultClockTime() % 20 == 0) {
             Season currentSeason = HomeostaticSeasonsAPI.getCurrentSeason(level);
 
             if (lastSeason != currentSeason) {
@@ -44,9 +48,10 @@ public class ServerEventHandler {
                 // Check if this is a newly created world and set the starting season if not the default
                 if (levelData.getGameTime() < 100L) {
                     long time = HomeostaticSeasonsAPI.getSeasonTime(serverlevel, ConfigHandler.Common.startingSeason());
+                    Optional<Holder<WorldClock>> clockHolder = level.dimensionType().defaultClock();
 
-                    if (time != -1L) {
-                        levelData.setDayTime(time);
+                    if (clockHolder.isPresent() && time != -1L) {
+                        level.getServer().clockManager().setTotalTicks(clockHolder.get(), time);
                     }
                 }
             }

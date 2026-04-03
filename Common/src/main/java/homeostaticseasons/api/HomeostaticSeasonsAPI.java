@@ -19,7 +19,7 @@ public class HomeostaticSeasonsAPI {
                 return ConfigHandler.Common.fixedSeason();
             }
             else {
-                return ConfigHandler.Common.getSeasonFromDayTime(level.getDayTime());
+                return ConfigHandler.Common.getSeasonFromDayTime(level.getDefaultClockTime());
             }
         }
         else {
@@ -50,7 +50,7 @@ public class HomeostaticSeasonsAPI {
                 return getRealtimeUntilNextSeason();
             }
             else if (ConfigHandler.Common.seasonChangeMethod() == SeasonChangeMethod.CONFIGURED) {
-                return ConfigHandler.Common.getTimeUntilNextSeason(level.getDayTime());
+                return ConfigHandler.Common.getTimeUntilNextSeason(level.getDefaultClockTime());
             }
         }
 
@@ -60,7 +60,7 @@ public class HomeostaticSeasonsAPI {
     public static long getTimeUntilSeason(Level level, Season season) {
         if (ConfigHandler.Common.seasonChangeMethod() == SeasonChangeMethod.CONFIGURED
                 && isSeasonalDimension(level.dimension())) {
-            return ConfigHandler.Common.getTimeUntilSeason(level.getDayTime(), season);
+            return ConfigHandler.Common.getTimeUntilSeason(level.getDefaultClockTime(), season);
         }
 
         return -1L;

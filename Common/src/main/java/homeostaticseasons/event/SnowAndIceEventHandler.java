@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.longs.LongArraySet;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.storage.DimensionDataStorage;
+import net.minecraft.world.level.storage.SavedDataStorage;
 
 import homeostaticseasons.common.block.PlacedMeltablesSavedData;
 import homeostaticseasons.common.block.ReplacedMeltablesSavedData;
@@ -26,13 +26,13 @@ public class SnowAndIceEventHandler {
     }
 
     public static PlacedMeltablesSavedData getPlacedMeltablesSavedData(ServerLevel level) {
-        DimensionDataStorage storage = level.getDataStorage();
+        SavedDataStorage storage = level.getDataStorage();
 
         return storage.computeIfAbsent(PlacedMeltablesSavedData.TYPE);
     }
 
     public static ReplacedMeltablesSavedData getReplacedMeltablesSavedData(ServerLevel level) {
-        DimensionDataStorage storage = level.getDataStorage();
+        SavedDataStorage storage = level.getDataStorage();
 
         return storage.computeIfAbsent(ReplacedMeltablesSavedData.TYPE);
     }
