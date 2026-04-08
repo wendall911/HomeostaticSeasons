@@ -17,7 +17,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 
-import homeostaticseasons.HomeostaticSeasons;
 import homeostaticseasons.api.HomeostaticSeasonsAPI;
 import homeostaticseasons.api.Season;
 import homeostaticseasons.common.biome.BiomeColormap;
@@ -45,7 +44,6 @@ public class LeafLitterTinter {
     }
 
     public static int getLeafLitterTintedColor(BlockState blockState, BlockAndTintGetter levelGetter, @Nullable BlockPos pos, int tintIndex) {
-        HomeostaticSeasons.LOGGER.warn("getLeafLitterTintedColor");
         if (cache.containsKey(blockState)) {
             return cache.get(blockState);
         }
