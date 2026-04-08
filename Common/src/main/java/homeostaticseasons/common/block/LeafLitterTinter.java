@@ -12,45 +12,47 @@ import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.MapColor;
 
+import homeostaticseasons.HomeostaticSeasons;
 import homeostaticseasons.api.HomeostaticSeasonsAPI;
 import homeostaticseasons.api.Season;
 import homeostaticseasons.common.biome.BiomeColormap;
 import homeostaticseasons.common.biome.BiomeColormapManager;
 import homeostaticseasons.util.ColorHelper;
 
-public class BirchFoliageTinter {
+public class LeafLitterTinter {
 
     private static final Map<BlockState, Integer> cache = new HashMap<>();
 
-    public static BlockTintSource getBirchTintSource() {
+    public static BlockTintSource getLeafLitterTintSource() {
         return new BlockTintSource() {
 
             @Override
             public int color(@NonNull BlockState blockState) {
-                return getBirchTintedColor(blockState, null, null, 0);
+                return getLeafLitterTintedColor(blockState, null, null, 0);
             }
 
             @Override
             public int colorInWorld(@NonNull BlockState state, @NonNull BlockAndTintGetter level, @NonNull BlockPos pos) {
-                return getBirchTintedColor(state, level, pos, 0);
+                return getLeafLitterTintedColor(state, level, pos, 0);
             }
 
         };
     }
 
-    public static int getBirchTintedColor(BlockState blockState, BlockAndTintGetter levelGetter, @Nullable BlockPos pos, int tintIndex) {
+    public static int getLeafLitterTintedColor(BlockState blockState, BlockAndTintGetter levelGetter, @Nullable BlockPos pos, int tintIndex) {
+        HomeostaticSeasons.LOGGER.warn("getLeafLitterTintedColor");
         if (cache.containsKey(blockState)) {
             return cache.get(blockState);
         }
 
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
-        int originalColor = FoliageColor.FOLIAGE_BIRCH;
+        int originalColor = MapColor.COLOR_BROWN.col;
 
         if (player != null) {
             Level level = player.level();

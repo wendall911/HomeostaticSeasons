@@ -7,6 +7,7 @@ import net.minecraft.world.level.Level;
 import homeostaticseasons.api.HomeostaticSeasonsAPI;
 import homeostaticseasons.api.Season;
 import homeostaticseasons.common.block.BirchFoliageTinter;
+import homeostaticseasons.common.block.LeafLitterTinter;
 
 public class ClientEventHandler {
 
@@ -44,6 +45,7 @@ public class ClientEventHandler {
 
     private static void updateRenderer(Minecraft minecraft) {
         BirchFoliageTinter.clearCache();
+        LeafLitterTinter.clearCache();
         minecraft.levelRenderer.allChanged();
     }
 
