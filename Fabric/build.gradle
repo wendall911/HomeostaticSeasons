@@ -16,11 +16,11 @@ dependencies {
     implementation group: 'technology.roughness.whitenoise', name: "whitenoise-${minecraft_version}-fabric", version: "${whitenoise_version}"
     include group: 'technology.roughness.whitenoise', name: "whitenoise-${minecraft_version}-fabric", version: "${whitenoise_version}"
 
-    runtimeOnly("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
+    localRuntime("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
 
-    runtimeOnly "net.jodah:typetools:0.6.3"
+    localRuntime "net.jodah:typetools:0.6.3"
     implementation "com.electronwill.night-config:core:3.6.7"
 
     runtimeOnly group: 'com.terraformersmc', name: 'modmenu', version: "${mod_menu_version}"
@@ -29,7 +29,7 @@ dependencies {
         // Datagen mods
     }
     else {
-        runtimeOnly group: 'com.github.wendall911.homeostatic', name: "homeostatic-${minecraft_version}-fabric", version: "${homeostatic_version}"
+        localRuntime group: 'com.github.wendall911.homeostatic', name: "homeostatic-${minecraft_version}-fabric", version: "${homeostatic_version}"
         // Runtime testing mods
         //runtimeOnly "dev.architectury:architectury-fabric:${architectury_version}"
         //runtimeOnly "curse.maven:glitchcore-955399:${glitch_core_fabric_version}"
