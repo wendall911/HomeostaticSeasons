@@ -2,7 +2,7 @@ package homeostaticseasons.data;
 
 import java.util.concurrent.CompletableFuture;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -23,7 +23,7 @@ public class HomeostaticSeasonsBlockTagsProvider extends IntrinsicHolderTagsProv
     }
 
     @Override
-    protected void addTags(HolderLookup.@NotNull Provider provider) {
+    protected void addTags(HolderLookup.@NonNull Provider provider) {
         getOrCreateRawBuilder(TagManager.Blocks.REPLACEABLE_BY_SNOW)
             .addOptionalTag(BlockTags.SAPLINGS.location())
             .addOptionalTag(BlockTags.FLOWERS.location())

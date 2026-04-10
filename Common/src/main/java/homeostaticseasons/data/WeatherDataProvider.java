@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
@@ -51,8 +51,8 @@ public class WeatherDataProvider implements DataProvider {
     }
 
     @Override
-    @NotNull
-    public CompletableFuture<?> run(@NotNull CachedOutput cache) {
+    @NonNull
+    public CompletableFuture<?> run(@NonNull CachedOutput cache) {
         List<CompletableFuture<?>> futures = new ArrayList<>();
 
         registerWeatherData();
@@ -69,7 +69,7 @@ public class WeatherDataProvider implements DataProvider {
     }
 
     @Override
-    public @NotNull String getName() {
+    public @NonNull String getName() {
         return HomeostaticSeasons.MOD_NAME + " - Weather Data";
     }
 

@@ -2,7 +2,7 @@ package homeostaticseasons.api;
 
 import java.util.Locale;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import net.minecraft.util.StringRepresentable;
 
@@ -25,7 +25,7 @@ public enum Season implements StringRepresentable {
     LATE_WINTER();
 
     @Override
-    public @NotNull String getSerializedName() {
+    public @NonNull String getSerializedName() {
         return this.name().toLowerCase(Locale.ROOT);
     }
 

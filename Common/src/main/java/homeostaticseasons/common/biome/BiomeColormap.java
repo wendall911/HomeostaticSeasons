@@ -3,7 +3,7 @@ package homeostaticseasons.common.biome;
 import java.lang.reflect.Type;
 import java.util.Locale;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -99,7 +99,7 @@ public record BiomeColormap(Identifier type, int grassColor, float grassSaturati
     }
 
     @Override
-    public @NotNull String toString() {
+    public @NonNull String toString() {
         return "BiomeColormap{" +
             "grassColor=" + grassColor +
             ", grassSaturation=" + grassSaturation +
