@@ -29,7 +29,7 @@ public class HomeostaticSeasons {
             ConfigHandler.initCommon();
         });
 
-        if (Services.PLATFORM.isPhysicalClient()) {
+        if (Services.WN_PLATFORM.isPhysicalClient()) {
             WhiteNoiseConfigLoader.add(WhiteNoiseConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC, MODID);
         }
     }

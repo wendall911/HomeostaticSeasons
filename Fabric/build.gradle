@@ -23,7 +23,7 @@ dependencies {
     localRuntime "net.jodah:typetools:0.6.3"
     implementation "com.electronwill.night-config:core:3.6.7"
 
-    runtimeOnly group: 'com.terraformersmc', name: 'modmenu', version: "${mod_menu_version}"
+    localRuntime group: 'com.terraformersmc', name: 'modmenu', version: "${mod_menu_version}"
 
     if (System.getenv('DATA_GEN') != null) {
         // Datagen mods
@@ -31,18 +31,18 @@ dependencies {
     else {
         localRuntime group: 'com.github.wendall911.homeostatic', name: "homeostatic-${minecraft_version}-fabric", version: "${homeostatic_version}"
         // Runtime testing mods
-        //runtimeOnly "dev.architectury:architectury-fabric:${architectury_version}"
-        //runtimeOnly "curse.maven:glitchcore-955399:${glitch_core_fabric_version}"
-        //runtimeOnly "curse.maven:biomesoplenty-220318:${bop_fabric_version}"
-        //runtimeOnly "curse.maven:terrablender-565956:${terrablender_fabric_version}"
-        //runtimeOnly "curse.maven:regions-659110:${regions_fabric_version}"
-        //runtimeOnly "org.ladysnake.cardinal-components-api:cardinal-components-base:${cardinal_components_version}"
-        //runtimeOnly "org.ladysnake.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
-        //runtimeOnly "curse.maven:simpletextoverlay-321283:${simpletextoverlay_fabric_version}"
-        //runtimeOnly "curse.maven:byg-1070751:${byg_fabric_version}"
-        //runtimeOnly "curse.maven:tyg-962544:${tyg_fabric_version}"
-        //runtimeOnly "curse.maven:corgilib-693313:${corgilib_fabric_version}"
-        //runtimeOnly "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_fabric_version}"
+        //localRuntime "dev.architectury:architectury-fabric:${architectury_version}"
+        //localRuntime "curse.maven:glitchcore-955399:${glitch_core_fabric_version}"
+        //localRuntime "curse.maven:biomesoplenty-220318:${bop_fabric_version}"
+        //localRuntime "curse.maven:terrablender-565956:${terrablender_fabric_version}"
+        //localRuntime "curse.maven:regions-659110:${regions_fabric_version}"
+        //localRuntime "org.ladysnake.cardinal-components-api:cardinal-components-base:${cardinal_components_version}"
+        //localRuntime "org.ladysnake.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
+        //localRuntime "curse.maven:simpletextoverlay-321283:${simpletextoverlay_fabric_version}"
+        //localRuntime "curse.maven:byg-1070751:${byg_fabric_version}"
+        //localRuntime "curse.maven:tyg-962544:${tyg_fabric_version}"
+        //localRuntime "curse.maven:corgilib-693313:${corgilib_fabric_version}"
+        //localRuntime "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_fabric_version}"
     }
 }
 
@@ -153,7 +153,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId project.group
-            artifactId identifier
+            artifactId "${mod_id}-${minecraft_version}-fabric"
             version project.version
             from components.java
         }

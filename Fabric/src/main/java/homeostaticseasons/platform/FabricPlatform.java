@@ -19,7 +19,7 @@ public class FabricPlatform implements IPlatform {
 
     @Override
     public boolean isPhysicalClient() {
-        return Services.PLATFORM.isPhysicalClient();
+        return Services.WN_PLATFORM.isPhysicalClient();
     }
 
     @Override

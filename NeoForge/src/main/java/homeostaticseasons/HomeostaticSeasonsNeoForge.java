@@ -23,7 +23,7 @@ public class HomeostaticSeasonsNeoForge {
         bus.addListener(this::setup);
         bus.addListener(this::registerPayloadHandler);
 
-        if (Services.PLATFORM.isPhysicalClient()) {
+        if (Services.WN_PLATFORM.isPhysicalClient()) {
             HomeostaticSeasonsClientNeoForge.init(bus);
         }
     }
