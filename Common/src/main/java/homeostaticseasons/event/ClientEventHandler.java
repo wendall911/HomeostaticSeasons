@@ -12,7 +12,6 @@ import homeostaticseasons.common.block.LeafLitterTinter;
 public class ClientEventHandler {
 
     static Season lastSeason = null;
-    static int lastSeasonDay = -1;
 
     public static void onClientTick(Minecraft minecraft) {
         Player player = minecraft.player;
@@ -24,20 +23,10 @@ public class ClientEventHandler {
             if (currentSeason != null) {
                 if (lastSeason == null) {
                     lastSeason = currentSeason;
-                    lastSeasonDay = getSeasonDay(minecraft, currentSeason);
                 }
                 else if (lastSeason != currentSeason) {
                     lastSeason = currentSeason;
-                    lastSeasonDay = 1;
                     updateRenderer(minecraft);
-                }
-                else {
-                    int seasonDay = getSeasonDay(minecraft, currentSeason);
-
-                    if (seasonDay > lastSeasonDay) {
-                        lastSeasonDay = seasonDay;
-                        updateRenderer(minecraft);
-                    }
                 }
             }
         }
