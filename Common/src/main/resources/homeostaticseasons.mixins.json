@@ -18,6 +18,7 @@
   "client": [
     "ClientBiomeMixin",
     "FoliageColorMixin",
-    "LevelRendererMixin"
+    "LevelRendererMixin",
+    "PlayerMixin"
   ]
 }

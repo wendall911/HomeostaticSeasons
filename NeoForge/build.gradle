@@ -72,6 +72,7 @@ dependencies {
         //runtimeOnly "curse.maven:arsnouveau-401955:${ars_neoforge_version}"
         //runtimeOnly "curse.maven:kiwi-303657:7209486"
         //runtimeOnly "curse.maven:snow_real_magic-308663:6783557"
+        runtimeOnly "curse.maven:betterdays-895618:${betterdays_neoforge_version}"
     }
 }
 
