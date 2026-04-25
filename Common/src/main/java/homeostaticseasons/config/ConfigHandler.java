@@ -288,6 +288,8 @@ public class ConfigHandler {
         public static Season getSeasonFromDayTime(long dayTime) {
             long timeOfYear;
 
+            dayTime = dayTime + 6000;
+
             if (dayTime < getTotalYearLength()) {
                 timeOfYear = dayTime;
             }
@@ -298,14 +300,16 @@ public class ConfigHandler {
             return seasonMap.floorEntry(timeOfYear).getValue();
         }
 
-        public static long getTimeUntilNextSeason(long gameTime) {
+        public static long getTimeUntilNextSeason(long dayTime) {
             long seasonTime;
 
-            if (gameTime < getTotalYearLength()) {
-                seasonTime = gameTime;
+            dayTime = dayTime + 6000;
+
+            if (dayTime < getTotalYearLength()) {
+                seasonTime = dayTime;
             }
             else {
-                seasonTime = gameTime % getTotalYearLength();
+                seasonTime = dayTime % getTotalYearLength();
             }
 
             Long nextKey = seasonMap.higherKey(seasonTime);
@@ -313,15 +317,17 @@ public class ConfigHandler {
             return Objects.requireNonNullElseGet(nextKey, Common::getTotalYearLength) - seasonTime;
         }
 
-        public static long getTimeUntilSeason(long gameTime, Season season) {
+        public static long getTimeUntilSeason(long dayTime, Season season) {
             long timeOfYear;
             long seasonStartTime = seasonStartTimes.get(season);
 
-            if (gameTime < getTotalYearLength()) {
-                timeOfYear = gameTime;
+            dayTime = dayTime + 6000;
+
+            if (dayTime < getTotalYearLength()) {
+                timeOfYear = dayTime;
             }
             else {
-                timeOfYear = gameTime % getTotalYearLength();
+                timeOfYear = dayTime % getTotalYearLength();
             }
 
             if (seasonStartTime >= timeOfYear) {
