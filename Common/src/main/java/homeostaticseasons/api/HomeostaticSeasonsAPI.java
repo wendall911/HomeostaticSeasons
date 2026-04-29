@@ -3,6 +3,9 @@ package homeostaticseasons.api;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 
@@ -10,7 +13,7 @@ import homeostaticseasons.config.ConfigHandler;
 
 public class HomeostaticSeasonsAPI {
 
-    public static Season getCurrentSeason(Level level) {
+    public static @Nullable Season getCurrentSeason(Level level) {
         if (isSeasonalDimension(level.dimension())) {
             if (ConfigHandler.Common.seasonChangeMethod() == SeasonChangeMethod.REALTIME) {
                 return getRealtimeSeason();
@@ -27,7 +30,7 @@ public class HomeostaticSeasonsAPI {
         }
     }
 
-    public static Season getNextSeason(Level level, Season currentSeason) {
+    public static @Nullable Season getNextSeason(Level level, @NonNull Season currentSeason) {
         if (isSeasonalDimension(level.dimension())) {
             return currentSeason.next();
         }
@@ -35,7 +38,7 @@ public class HomeostaticSeasonsAPI {
         return null;
     }
 
-    public static long getSeasonTime(Level level, Season season) {
+    public static long getSeasonTime(Level level, @NonNull Season season) {
         if (ConfigHandler.Common.seasonChangeMethod() == SeasonChangeMethod.CONFIGURED
                 && isSeasonalDimension(level.dimension())) {
             return ConfigHandler.Common.getSeasonTime(season);
@@ -57,7 +60,7 @@ public class HomeostaticSeasonsAPI {
         return 0L;
     }
 
-    public static long getTimeUntilSeason(Level level, Season season) {
+    public static long getTimeUntilSeason(Level level, @NonNull Season season) {
         if (ConfigHandler.Common.seasonChangeMethod() == SeasonChangeMethod.CONFIGURED
                 && isSeasonalDimension(level.dimension())) {
             return ConfigHandler.Common.getTimeUntilSeason(level.getDefaultClockTime(), season);

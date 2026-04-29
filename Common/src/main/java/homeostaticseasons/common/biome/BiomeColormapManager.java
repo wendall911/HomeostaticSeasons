@@ -57,7 +57,7 @@ public class BiomeColormapManager extends SimpleJsonResourceReloadListener<JsonE
         }
     }
 
-    private static Identifier getSerializedName(BiomeColormap.ColormapType type, Season season) {
+    private static Identifier getSerializedName(BiomeColormap.ColormapType type, @NonNull Season season) {
         return prefix(season.getSerializedName() + "_" + type.toString());
     }
 
@@ -69,7 +69,7 @@ public class BiomeColormapManager extends SimpleJsonResourceReloadListener<JsonE
         return COLORMAPS.get(type);
     }
 
-    public static BiomeColormap getColormap(Holder<Biome> biome, Season season) {
+    public static BiomeColormap getColormap(Holder<Biome> biome, @NonNull Season season) {
         ColormapType biomeTypeColormap = getColormapType(biome);
 
         return getBiomeColormap(getSerializedName(biomeTypeColormap, season));

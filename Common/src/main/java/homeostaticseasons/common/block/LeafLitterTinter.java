@@ -56,27 +56,35 @@ public class LeafLitterTinter {
             Level level = player.level();
             Holder<Biome> biomeHolder = level.getBiome(player.blockPosition());
             Season currentSeason = HomeostaticSeasonsAPI.getCurrentSeason(level);
-            BiomeColormap biomeColormap = BiomeColormapManager.getColormap(
-                biomeHolder,
-                currentSeason
-            );
-            BiomeColormap nextSeasonBiomeColormap = BiomeColormapManager.getColormap(
-                biomeHolder,
-                HomeostaticSeasonsAPI.getNextSeason(level, currentSeason)
-            );
+            Season nextSeason = null;
 
-            if (biomeColormap != null && nextSeasonBiomeColormap != null && currentSeason != null) {
-                long seasonLength = currentSeason.getSeasonLength();
-                long timeUntilNextSeason = HomeostaticSeasonsAPI.getTimeUntilNextSeason(level);
-                int newColor = ColorHelper.mix(
-                    biomeColormap.getBirchColor(originalColor, biomeHolder),
-                    nextSeasonBiomeColormap.getBirchColor(originalColor, biomeHolder),
-                    timeUntilNextSeason / (float) seasonLength
+            if (currentSeason != null) {
+                nextSeason = HomeostaticSeasonsAPI.getNextSeason(level, currentSeason);
+            }
+
+            if (currentSeason != null && nextSeason != null) {
+                BiomeColormap biomeColormap = BiomeColormapManager.getColormap(
+                    biomeHolder,
+                    currentSeason
+                );
+                BiomeColormap nextSeasonBiomeColormap = BiomeColormapManager.getColormap(
+                    biomeHolder,
+                    nextSeason
                 );
 
-                cache.put(blockState, newColor);
+                if (biomeColormap != null && nextSeasonBiomeColormap != null) {
+                    long seasonLength = currentSeason.getSeasonLength();
+                    long timeUntilNextSeason = HomeostaticSeasonsAPI.getTimeUntilNextSeason(level);
+                    int newColor = ColorHelper.mix(
+                        biomeColormap.getBirchColor(originalColor, biomeHolder),
+                        nextSeasonBiomeColormap.getBirchColor(originalColor, biomeHolder),
+                        timeUntilNextSeason / (float) seasonLength
+                    );
 
-                return newColor;
+                    cache.put(blockState, newColor);
+
+                    return newColor;
+                }
             }
         }
 
