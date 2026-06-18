@@ -13,11 +13,10 @@ Multi-loader: `Common/` + `NeoForge/` + `Fabric/`
 ## Branch Convention
 | Branch | Modloaders        |
 |--------|-------------------|
-| 1.20.1 | NeoForge + Fabric |
 | 1.21.1 | NeoForge + Fabric |
 | 26.1   | NeoForge + Fabric |
 
-Maintained: 1.20.1, 1.21.1, 26.1
+Maintained: 1.21.1, 26.1
 
 ## Dependencies
 - ClimateSettings (jarJar/include — currently an embedded sub-project of Homeostatic; planned to become a standalone library)
