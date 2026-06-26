@@ -5,6 +5,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
@@ -16,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.WritableLevelData;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -49,9 +51,13 @@ public abstract class ServerLevelMixin extends Level implements WorldGenLevel {
         BlockPos blockpos1 = blockpos.below();
         Biome biome = this.getBiome(blockpos).value();
 
-        if (biome.shouldFreeze(this.getLevel(), blockpos1)) {
-            SnowAndIceEventHandler.cacheMeltableBlock(blockpos1);
-            this.setBlockAndUpdate(blockpos1, Blocks.ICE.defaultBlockState());
+        if (SeasonWeather.canFreeze(biome, blockpos1, this.getLevel())) {
+            FluidState fluidState = this.getBlockState(blockpos1).getFluidState();
+
+            if (fluidState.is(FluidTags.WATER) && fluidState.isSource() && fluidState.isFull()) {
+                SnowAndIceEventHandler.cacheMeltableBlock(blockpos1);
+                this.setBlockAndUpdate(blockpos1, Blocks.ICE.defaultBlockState());
+            }
         }
 
         if (this.isRaining()) {

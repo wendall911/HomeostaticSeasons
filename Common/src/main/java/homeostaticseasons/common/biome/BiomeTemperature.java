@@ -60,6 +60,30 @@ public class BiomeTemperature {
         return getAirTemperature() >= 0.15F;
     }
 
+    public boolean isWarmEnoughToMelt() {
+        float groundTempOffset = 0.0F;
+
+        switch(currentSeason) {
+            case EARLY_SPRING, EARLY_WINTER:
+                groundTempOffset = BiomeTypeData.MC_DEGREE * 6;
+                break;
+            case MID_SPRING, LATE_AUTUMN:
+                groundTempOffset = BiomeTypeData.MC_DEGREE * 5;
+                break;
+            case LATE_SPRING, MID_AUTUMN:
+                groundTempOffset = BiomeTypeData.MC_DEGREE * 3;
+                break;
+            case MID_WINTER:
+                groundTempOffset = BiomeTypeData.MC_DEGREE * 10;
+                break;
+            case LATE_WINTER:
+                groundTempOffset = BiomeTypeData.MC_DEGREE * 8;
+                break;
+        }
+
+        return (getAirTemperature() - groundTempOffset) >= 0.15F;
+    }
+
     public float getAirTemperature() {
         try {
             return getAirTemperatureRaw();
