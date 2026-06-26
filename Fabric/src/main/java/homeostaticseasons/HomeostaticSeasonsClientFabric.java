@@ -22,7 +22,7 @@ public class HomeostaticSeasonsClientFabric implements ClientModInitializer {
                     mc.level.clearTintCaches();
                 }
                 if (mc.levelRenderer != null) {
-                    mc.levelRenderer.allChanged();
+                    mc.levelExtractor.allChanged();
                 }
             });
         });

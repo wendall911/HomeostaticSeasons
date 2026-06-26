@@ -17,7 +17,6 @@
   },
   "client": [
     "ClientBiomeMixin",
-    "PlayerMixin",
-    "WeatherEffectRendererMixin"
+    "PlayerMixin"
   ]
 }

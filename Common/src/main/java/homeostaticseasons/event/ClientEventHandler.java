@@ -46,7 +46,7 @@ public class ClientEventHandler {
     private static void updateRenderer(Minecraft minecraft) {
         BirchFoliageTinter.clearCache();
         LeafLitterTinter.clearCache();
-        minecraft.levelRenderer.allChanged();
+        minecraft.levelExtractor.allChanged();
     }
 
     private static int getSeasonDay(Minecraft minecraft, Season season) {
