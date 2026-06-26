@@ -40,26 +40,32 @@ public class ColormapResolvers {
         Minecraft mc = Minecraft.getInstance();
         Level level = mc.level;
 
-        if (type == ColormapType.GRASS && !ConfigHandler.Client.changeGrassColor()) {
-            return originalColor;
-        }
-        else if (type == ColormapType.FOLIAGE && !ConfigHandler.Client.changeFoliageColor()) {
-            return originalColor;
-        }
-
         if (level != null && ConfigHandler.Common.isValidDimension(level.dimension())) {
             Holder<Biome> biomeHolder = RegistryHelper.getBiomeHolder(biome, level);
             Season currentSeason = HomeostaticSeasonsAPI.getCurrentSeason(level);
 
             if (biomeHolder != null && currentSeason != null) {
+                Season nextSeason = HomeostaticSeasonsAPI.getNextSeason(level, currentSeason);
+                BiomeColormap nextSeasonBiomeColormap = null;
+
+                if (type == ColormapType.GRASS && ConfigHandler.Client.isBlacklistGrassColorBiome(biomeHolder)) {
+                    return originalColor;
+                }
+                else if (type == ColormapType.FOLIAGE && ConfigHandler.Client.isBlacklistFoliageColorBiome(biomeHolder)) {
+                    return originalColor;
+                }
+
                 BiomeColormap biomeColormap = BiomeColormapManager.getColormap(
                     biomeHolder,
                     currentSeason
                 );
-                BiomeColormap nextSeasonBiomeColormap = BiomeColormapManager.getColormap(
-                    biomeHolder,
-                    HomeostaticSeasonsAPI.getNextSeason(level, currentSeason)
-                );
+
+                if (nextSeason != null) {
+                    nextSeasonBiomeColormap = BiomeColormapManager.getColormap(
+                        biomeHolder,
+                        nextSeason
+                    );
+                }
 
                 if (biomeColormap != null && nextSeasonBiomeColormap != null) {
                     long seasonLength = currentSeason.getSeasonLength();

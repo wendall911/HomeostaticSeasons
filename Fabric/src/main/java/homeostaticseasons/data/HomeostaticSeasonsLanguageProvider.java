@@ -24,9 +24,9 @@ public class HomeostaticSeasonsLanguageProvider extends FabricLanguageProvider {
 
         addConfigTitle(translationBuilder, "Homeostatic Seasons");
         addConfigTranslation(translationBuilder, "visuals");
-        addConfigTranslation(translationBuilder, "changefoliagecolor");
-        addConfigTranslation(translationBuilder, "changegrasscolor");
-        addConfigTranslation(translationBuilder, "changebirchcolor");
+        addConfigTranslation(translationBuilder, "blacklistfoliagecolor");
+        addConfigTranslation(translationBuilder, "blacklistgrasscolor");
+        addConfigTranslation(translationBuilder, "blacklistbirchcolor");
         addConfigTranslation(translationBuilder, "seasons");
         addConfigTranslation(translationBuilder, "whitelistdimensions");
         addConfigTranslation(translationBuilder, "seasonchangemethod");

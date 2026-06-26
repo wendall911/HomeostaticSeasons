@@ -13,12 +13,12 @@ public class Translations {
     static {
         translations.put("visuals.title", "Visual Settings");
         translations.put("visuals", "All settings related to visual effects.");
-        translations.put("changefoliagecolor.title", "Change Foliage Color");
-        translations.put("changefoliagecolor", "Whether or not the foliage color changes based on the current season.");
-        translations.put("changegrasscolor.title", "Change Grass Color");
-        translations.put("changegrasscolor", "Whether or not the grass color changes based on the current season.");
-        translations.put("changebirchcolor.title", "Change Birch Color");
-        translations.put("changebirchcolor", "Whether or not the birch leaves color changes based on the current season.");
+        translations.put("blacklistfoliagecolor.title", "Foliage Color Biomes Blacklist");
+        translations.put("blacklistfoliagecolor", "Biomes where the foliage color does not change based on the current season.");
+        translations.put("blacklistgrasscolor.title", "Grass Color Biomes Blacklist");
+        translations.put("blacklistgrasscolor", "Biomes where the grass color does not change based on the current season.");
+        translations.put("blacklistbirchcolor.title", "Birch Color Biomes Blacklist");
+        translations.put("blacklistbirchcolor", "Biomes where the birch leaves color does not change based on the current season.");
         translations.put("seasons.title", "Seasons Settings");
         translations.put("seasons", "All settings related to the seasons system.");
         translations.put("whitelistdimensions.title", "Whitelisted Dimensions");
