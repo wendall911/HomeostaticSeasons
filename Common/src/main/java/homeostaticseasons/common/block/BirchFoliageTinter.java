@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintSource;
@@ -21,6 +20,7 @@ import homeostaticseasons.api.HomeostaticSeasonsAPI;
 import homeostaticseasons.api.Season;
 import homeostaticseasons.common.biome.BiomeColormap;
 import homeostaticseasons.common.biome.BiomeColormapManager;
+import homeostaticseasons.config.ConfigHandler;
 import homeostaticseasons.util.ColorHelper;
 
 public class BirchFoliageTinter {
@@ -32,18 +32,18 @@ public class BirchFoliageTinter {
 
             @Override
             public int color(@NonNull BlockState blockState) {
-                return getBirchTintedColor(blockState, null, null, 0);
+                return getBirchTintedColor(blockState);
             }
 
             @Override
             public int colorInWorld(@NonNull BlockState state, @NonNull BlockAndTintGetter level, @NonNull BlockPos pos) {
-                return getBirchTintedColor(state, level, pos, 0);
+                return getBirchTintedColor(state);
             }
 
         };
     }
 
-    public static int getBirchTintedColor(BlockState blockState, BlockAndTintGetter levelGetter, @Nullable BlockPos pos, int tintIndex) {
+    public static int getBirchTintedColor(BlockState blockState) {
         if (cache.containsKey(blockState)) {
             return cache.get(blockState);
         }
@@ -57,6 +57,10 @@ public class BirchFoliageTinter {
             Holder<Biome> biomeHolder = level.getBiome(player.blockPosition());
             Season currentSeason = HomeostaticSeasonsAPI.getCurrentSeason(level);
             Season nextSeason = null;
+
+            if (ConfigHandler.Client.isBlacklistBirchColorBiome(biomeHolder)) {
+                return originalColor;
+            }
 
             if (currentSeason != null) {
                 nextSeason = HomeostaticSeasonsAPI.getNextSeason(level, currentSeason);
