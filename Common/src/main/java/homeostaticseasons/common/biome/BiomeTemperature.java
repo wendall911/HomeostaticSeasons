@@ -243,7 +243,13 @@ public class BiomeTemperature {
 
         radiation += sunlight * 100;
 
-        return Math.max(radiation, 0);
+        double sunRadiation = Math.max(radiation, 0);
+
+        if (sunRadiation > 0) {
+            sunRadiation = radiationOffset(sunRadiation, level);
+        }
+
+        return sunRadiation;
     }
 
     /*
@@ -287,7 +293,7 @@ public class BiomeTemperature {
         return biomeTypeData.getHumidity(getPrecipitationAt(biomeHolder.value(), blockPos));
     }
 
-    private static float getDayNightOffset(Level level, Holder<Biome> biomeHolder, double relativeHumidity) {
+    private float getDayNightOffset(Level level, Holder<Biome> biomeHolder, double relativeHumidity) {
         long time = (level.getDayTime() % 24000);
         HomeostaticClimateSettings climateSettings = CLIMATE.getClimateSettings(biomeHolder);
         BiomeTypeData biomeTypeData = BiomeTypeDataManager.getDataForBiome(biomeHolder);
@@ -302,15 +308,52 @@ public class BiomeTemperature {
         float humidityOffset = 1.0F - (float) (relativeHumidity / 100);
         float offset;
 
+        increaseTemp = (float) radiationOffset(increaseTemp, level);
+
         if (time > 23000) {
-            offset = (24001 - time) * increaseTemp;
-        } else if (time < 9001) {
+            offset = (time - 23000) * increaseTemp;
+        }
+        else if (time < 9001) {
             offset = (time + 1000) * increaseTemp;
-        } else {
+        }
+        else {
             offset = maxTemp - ((time - 9000) * decreaseTemp);
         }
 
         return offset * humidityOffset;
+    }
+
+    /*
+     * Seasonally offset radiation/temperature values.
+     */
+    private double radiationOffset(double value, Level level) {
+        LevelData info = level.getLevelData();
+        long time = (level.getDayTime() % 24000);
+
+        /*
+         * Seasonal offsets for solar radiation throughout the year.
+         * MID_SPRING is the highest temp zone;
+         */
+        switch (currentSeason) {
+            case EARLY_SPRING -> value *= 0.95F;
+            case LATE_SPRING -> value *= 0.87F;
+            case EARLY_SUMMER -> value *= 0.945F;
+            case MID_SUMMER -> value *= 0.92F;
+            case LATE_SUMMER -> value *= 0.888F;
+            case EARLY_AUTUMN -> value *= 0.74F;
+            case MID_AUTUMN -> value *= 0.716F;
+            case LATE_AUTUMN -> value *= 0.56F;
+            case EARLY_WINTER -> value *= 0.2F;
+            case MID_WINTER -> value *= 0.1F;
+            case LATE_WINTER -> value *= 0.3F;
+        }
+
+        // If raining, reduce the day/night offset by 90% during day hours (23000 - 9000)
+        if (info.isRaining() && (time > 23000 || time < 9001)) {
+            value *= 0.1F;
+        }
+
+        return value;
     }
 
     /*
