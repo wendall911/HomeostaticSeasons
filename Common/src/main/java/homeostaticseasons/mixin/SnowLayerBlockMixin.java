@@ -3,7 +3,6 @@ package homeostaticseasons.mixin;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.SnowLayerBlock;
@@ -33,7 +32,7 @@ public abstract class SnowLayerBlockMixin extends Block implements Meltable {
             return;
         }
 
-        if (SeasonWeather.getPrecipitationType(level.getBiome(pos).value(), pos, level) != Biome.Precipitation.SNOW) {
+        if (SeasonWeather.canMelt(level.getBiome(pos).value(), pos, level)) {
             Block.dropResources(state, level, pos);
             BlockState replacedState = SnowAndIceEventHandler.getReplacedMeltablesSavedData(level).getReplaced(pos);
 

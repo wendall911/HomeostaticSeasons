@@ -37,6 +37,15 @@ public class SeasonWeather {
         return long2intlinkedopenhashmap;
     }));
 
+    public static boolean canMelt(Biome biome, BlockPos pos, Level level) {
+        BiomeTemperature biomeTemperature = getBiomeTemperature(biome, level, pos);
+
+        return biomeTemperature.isWarmEnoughToMelt();
+    }
+
+    public static boolean canFreeze(Biome biome, BlockPos pos, Level level) {
+        return !canMelt(biome, pos, level);
+    }
 
     public static boolean warmEnoughToRain(Biome biome, BlockPos pos, LevelReader levelReader) {
         if (levelReader instanceof Level level && isValid(level)) {

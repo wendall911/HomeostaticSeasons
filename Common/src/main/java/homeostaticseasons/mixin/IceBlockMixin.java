@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.IceBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -32,22 +33,34 @@ public abstract class IceBlockMixin extends Block implements Meltable {
 
     @Inject(method = "randomTick", at = @At("HEAD"))
     public void homeostaticseasons$onRandomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, CallbackInfo ci) {
-        if (this == Blocks.ICE && SeasonWeather.warmEnoughToRain(level.getBiome(pos).value(), pos, level)) {
-            if (!SnowAndIceEventHandler.getPlacedMeltablesSavedData(level).isManuallyPlaced(pos)) {
-                this.melt(state, level, pos);
-            }
-            else {
-                boolean neaarWater = false;
+        if (this == Blocks.ICE) {
+            if (SeasonWeather.canMelt(level.getBiome(pos).value(), pos, level)) {
+                if (!SnowAndIceEventHandler.getPlacedMeltablesSavedData(level).isManuallyPlaced(pos)) {
+                    this.melt(state, level, pos);
+                }
+                else {
+                    boolean nearWater = false;
 
-                for (BlockPos nearbyPos : BlockPos.withinManhattan(pos, 1, 1, 1)) {
-                    if (level.getFluidState(nearbyPos).is(FluidTags.WATER)) {
-                        neaarWater = true;
-                        break;
+                    for (BlockPos nearbyPos : BlockPos.withinManhattan(pos, 1, 1, 1)) {
+                        if (level.getFluidState(nearbyPos).is(FluidTags.WATER)) {
+                            nearWater = true;
+                            break;
+                        }
+                    }
+
+                    if (nearWater) {
+                        this.melt(state, level, pos);
                     }
                 }
+            }
+            else {
+                for (BlockPos nearbyPos : BlockPos.betweenClosed(pos.offset(-1, 0, -1), pos.offset(1, 0, 1))) {
+                    FluidState fluidState = level.getFluidState(nearbyPos);
 
-                if (neaarWater) {
-                    this.melt(state, level, pos);
+                    if (fluidState.is(FluidTags.WATER) && fluidState.isSource()) {
+                        SnowAndIceEventHandler.cacheMeltableBlock(nearbyPos);
+                        level.setBlockAndUpdate(nearbyPos, Blocks.ICE.defaultBlockState());
+                    }
                 }
             }
         }
