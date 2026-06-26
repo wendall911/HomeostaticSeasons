@@ -1,10 +1,6 @@
 {
   "values": [
     {
-      "id": "#minecraft:saplings",
-      "required": false
-    },
-    {
       "id": "#minecraft:flowers",
       "required": false
     },
