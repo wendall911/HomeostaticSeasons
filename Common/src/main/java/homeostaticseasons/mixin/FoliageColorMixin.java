@@ -26,7 +26,7 @@ public class FoliageColorMixin {
 
     @Inject(method = "getBirchColor", at = @At("RETURN"), cancellable = true)
     private static void homeostaticseasons$modifyBirchFoliageColor(CallbackInfoReturnable<Integer> cir) {
-        if (Services.PLATFORM.isPhysicalClient() && ConfigHandler.Client.changeBirchColor()) {
+        if (Services.PLATFORM.isPhysicalClient()) {
             Minecraft mc = Minecraft.getInstance();
             Player player = mc.player;
             Level level = mc.level;
@@ -35,6 +35,10 @@ public class FoliageColorMixin {
             if (player != null && level != null) {
                 Holder<Biome> biomeHolder = level.getBiome(player.blockPosition());
                 Season currentSeason = HomeostaticSeasonsAPI.getCurrentSeason(level);
+
+                if (ConfigHandler.Client.isBlacklistBirchColorBiome(biomeHolder)) {
+                    return;
+                }
 
                 if (currentSeason != null) {
                     BiomeColormap biomeColormap = BiomeColormapManager.getColormap(

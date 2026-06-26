@@ -10,8 +10,10 @@ import java.util.TreeMap;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -31,6 +33,9 @@ public class ConfigHandler {
 
     private static final Client CLIENT;
     private static final Common COMMON;
+
+    private static final Predicate<Object> resourceLocationValidator = s -> s instanceof String
+        && ((String) s).matches("[a-z]+[:]{1}[a-z_]+");
 
     static {
         final Pair<Client, WhiteNoiseConfigSpec> specPairClient = new WhiteNoiseConfigSpec.Builder().configure(Client::new);
@@ -81,37 +86,52 @@ public class ConfigHandler {
 
     public static final class Client {
 
-        private final WhiteNoiseConfigSpec.BooleanValue changeFoliageColor;
-        private final WhiteNoiseConfigSpec.BooleanValue changeGrassColor;
-        private final WhiteNoiseConfigSpec.BooleanValue changeBirchColor;
+        private final WhiteNoiseConfigSpec.ConfigValue<List<? extends String>> blacklistFoliageColor;
+        private static final List<String> blacklistFoliageColorList = List.of("blacklistFoliageColor");
+        private final WhiteNoiseConfigSpec.ConfigValue<List<? extends String>> blacklistGrassColor;
+        private static final List<String> blacklistGrassColorList = List.of("blacklistGrassColor");
+        private final WhiteNoiseConfigSpec.ConfigValue<List<? extends String>> blacklistBirchColor;
+        private static final List<String> blacklistBirchColorList = List.of("blacklistBirchColor");
 
         Client(WhiteNoiseConfigSpec.Builder builder) {
 
             builder.push("visuals").comment(getTranslation("visuals"));
 
-            changeFoliageColor = builder
-                .comment(getTranslation("changefoliagecolor"))
-                .define("changeFoliageColor", true);
-            changeGrassColor = builder
-                .comment(getTranslation("changegrasscolor"))
-                .define("changeGrassColor", true);
-            changeBirchColor = builder
-                .comment(getTranslation("changebirchcolor"))
-                .define("changeBirchColor", true);
+            blacklistFoliageColor = builder
+                .comment(getTranslation("blacklistfoliagecolor"))
+                .defineListAllowEmpty(blacklistFoliageColorList, List::of, resourceLocationValidator);
+            blacklistGrassColor = builder
+                .comment(getTranslation("blacklistgrasscolor"))
+                .defineListAllowEmpty(blacklistGrassColorList, List::of, resourceLocationValidator);
+            blacklistBirchColor = builder
+                .comment(getTranslation("blacklistbirchcolor"))
+                .defineListAllowEmpty(blacklistBirchColorList, List::of, resourceLocationValidator);
 
             builder.pop(); // visuals
         }
 
-        public static boolean changeFoliageColor() {
-            return CLIENT.changeFoliageColor.get();
+        public static boolean isBlacklistFoliageColorBiome(Holder<Biome> biomeHolder) {
+            if (biomeHolder.unwrapKey().isPresent()) {
+                return CLIENT.blacklistFoliageColor.get().contains(biomeHolder.unwrapKey().get().location().toString());
+            }
+
+            return false;
         }
 
-        public static boolean changeGrassColor() {
-            return CLIENT.changeGrassColor.get();
+        public static boolean isBlacklistGrassColorBiome(Holder<Biome> biomeHolder) {
+            if (biomeHolder.unwrapKey().isPresent()) {
+                return CLIENT.blacklistGrassColor.get().contains(biomeHolder.unwrapKey().get().location().toString());
+            }
+
+            return false;
         }
 
-        public static boolean changeBirchColor() {
-            return CLIENT.changeBirchColor.get();
+        public static boolean isBlacklistBirchColorBiome(Holder<Biome> biomeHolder) {
+            if (biomeHolder.unwrapKey().isPresent()) {
+                return CLIENT.blacklistBirchColor.get().contains(biomeHolder.unwrapKey().get().location().toString());
+            }
+
+            return false;
         }
 
     }
@@ -123,8 +143,6 @@ public class ConfigHandler {
         private static final String[] defaultWhitelistDimensions = new String[] {
             "minecraft:overworld"
         };
-        private static final Predicate<Object> resourceLocationValidator = s -> s instanceof String
-            && ((String) s).matches("[a-z]+[:]{1}[a-z_]+");
         private final WhiteNoiseConfigSpec.EnumValue<SeasonChangeMethod> seasonChangeMethod;
         private final WhiteNoiseConfigSpec.EnumValue<Hemisphere> hemisphere;
         private static SeasonLengths seasonLengths;
