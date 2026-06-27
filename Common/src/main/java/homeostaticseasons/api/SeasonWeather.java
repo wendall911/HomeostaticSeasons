@@ -38,6 +38,10 @@ public class SeasonWeather {
     }));
 
     public static boolean canMelt(Biome biome, BlockPos pos, Level level) {
+        if (!isValid(level)) {
+            return false;
+        }
+
         BiomeTemperature biomeTemperature = getBiomeTemperature(biome, level, pos);
 
         return biomeTemperature.isWarmEnoughToMelt();
