@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.material.FluidState;
@@ -51,9 +52,10 @@ public abstract class ServerLevelMixin extends Level implements WorldGenLevel {
         Biome biome = this.getBiome(blockpos).value();
 
         if (SeasonWeather.canFreeze(biome, blockpos1, this.getLevel())) {
-            FluidState fluidState = this.getBlockState(blockpos1).getFluidState();
+            BlockState blockState = this.getBlockState(blockpos1);
+            FluidState fluidState = blockState.getFluidState();
 
-            if (fluidState.is(FluidTags.WATER) && fluidState.isSource()) {
+            if (fluidState.is(FluidTags.WATER) && fluidState.isSource() && !blockState.hasProperty(BlockStateProperties.WATERLOGGED)) {
                 SnowAndIceEventHandler.cacheMeltableBlock(blockpos1);
                 this.setBlockAndUpdate(blockpos1, Blocks.ICE.defaultBlockState());
             }
