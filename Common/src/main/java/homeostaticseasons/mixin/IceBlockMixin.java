@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.IceBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.FluidState;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -55,9 +56,10 @@ public abstract class IceBlockMixin extends Block implements Meltable {
             }
             else {
                 for (BlockPos nearbyPos : BlockPos.betweenClosed(pos.offset(-1, 0, -1), pos.offset(1, 0, 1))) {
-                    FluidState fluidState = level.getFluidState(nearbyPos);
+                    BlockState blockState = level.getBlockState(nearbyPos);
+                    FluidState fluidState = blockState.getFluidState();
 
-                    if (fluidState.is(FluidTags.WATER) && fluidState.isSource() && fluidState.isFull()) {
+                    if (fluidState.is(FluidTags.WATER) && fluidState.isSource() && fluidState.isFull() && !blockState.hasProperty(BlockStateProperties.WATERLOGGED)) {
                         SnowAndIceEventHandler.cacheMeltableBlock(nearbyPos);
                         level.setBlockAndUpdate(nearbyPos, Blocks.ICE.defaultBlockState());
                     }
