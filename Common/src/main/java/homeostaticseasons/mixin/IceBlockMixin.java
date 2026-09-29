@@ -42,7 +42,7 @@ public abstract class IceBlockMixin extends Block implements Meltable {
                 else {
                     boolean nearWater = false;
 
-                    for (BlockPos nearbyPos : BlockPos.withinManhattan(pos, 1, 1, 1)) {
+                    for (BlockPos nearbyPos : BlockPos.withinBoxByManhattanDistance(pos, 1, 1, 1)) {
                         if (level.getFluidState(nearbyPos).is(FluidTags.WATER)) {
                             nearWater = true;
                             break;

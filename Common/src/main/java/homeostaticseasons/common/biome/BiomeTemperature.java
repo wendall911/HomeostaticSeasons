@@ -17,7 +17,8 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biome.Precipitation;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
-import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
+import net.minecraft.world.level.levelgen.synth.Noise;
+import net.minecraft.world.level.levelgen.synth.SimplexNoise;
 
 import climatesettings.common.biome.BiomeTypeData;
 import climatesettings.common.biome.BiomeTypeDataManager;
@@ -32,7 +33,7 @@ import static climatesettings.platform.Services.CLIMATE;
 
 public class BiomeTemperature {
 
-    private static final PerlinSimplexNoise TEMPERATURE_NOISE = new PerlinSimplexNoise(new WorldgenRandom(new LegacyRandomSource(1234L)), ImmutableList.of(0));
+    private static final Noise TEMPERATURE_NOISE = new SimplexNoise(new WorldgenRandom(new LegacyRandomSource(1234L)), true);
 
     private final Holder<Biome> biomeHolder;
     private final Level level;
@@ -171,7 +172,7 @@ public class BiomeTemperature {
         float temperature = biomeTypeData.getTemperature(precipitation);
 
         if (blockPos.getY() > 80) {
-            float noise = (float)(TEMPERATURE_NOISE.getValue((float)blockPos.getX() / 8.0F, ((float)blockPos.getZ() / 8.0F), false) * 8.0D);
+            float noise = TEMPERATURE_NOISE.get(blockPos.getX() / 8.0F, blockPos.getZ() / 8.0F) * 8.0F;
 
             return temperature - (noise + getAdjustedHeight(level, blockPos.getY()) - 80.0F) * 0.05F / 40.0F;
         }
