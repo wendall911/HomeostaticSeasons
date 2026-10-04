@@ -42,7 +42,8 @@ dependencies {
         //localRuntime "curse.maven:byg-1070751:${byg_fabric_version}"
         //localRuntime "curse.maven:tyg-962544:${tyg_fabric_version}"
         //localRuntime "curse.maven:corgilib-693313:${corgilib_fabric_version}"
-        //localRuntime "software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_fabric_version}"
+        //localRuntime "com.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_fabric_version}"
+        //localRuntime "curse.maven:sift-1691925:${sift_fabric_version}"
     }
 }
 
