@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import homeostaticseasons.api.SeasonWeather;
 import homeostaticseasons.common.block.Meltable;
 import homeostaticseasons.event.SnowAndIceEventHandler;
 
@@ -19,14 +20,20 @@ public abstract class BlockBehaviorMixin {
 
     @Inject(method = "onPlace", at = @At("HEAD"))
     public void checkIfMeltablePlaced(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston, CallbackInfo ci) {
-        if (level instanceof ServerLevel serverLevel && !SnowAndIceEventHandler.isCachedMeltableBlock(pos) && state.getBlock() instanceof Meltable meltable) {
+        if (level instanceof ServerLevel serverLevel
+                && SeasonWeather.isValid(serverLevel)
+                && !SnowAndIceEventHandler.isCachedMeltableBlock(pos)
+                && state.getBlock() instanceof Meltable meltable) {
             meltable.onMeltableManuallyPlaced(serverLevel, pos);
         }
     }
 
     @Inject(method = "affectNeighborsAfterRemoval", at = @At("HEAD"))
     public void checkIfMeltableRemoved(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston, CallbackInfo ci) {
-        if (level instanceof ServerLevel serverLevel && state.getBlock() instanceof Meltable meltable && level.getBlockState(pos).isAir()) {
+        if (level instanceof ServerLevel serverLevel
+                && SeasonWeather.isValid(serverLevel)
+                && state.getBlock() instanceof Meltable meltable
+                && level.getBlockState(pos).isAir()) {
             meltable.onMeltableReplaced(serverLevel, pos);
         }
     }

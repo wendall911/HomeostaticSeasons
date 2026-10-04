@@ -34,7 +34,7 @@ public abstract class IceBlockMixin extends Block implements Meltable {
 
     @Inject(method = "randomTick", at = @At("HEAD"))
     public void homeostaticseasons$onRandomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, CallbackInfo ci) {
-        if (this == Blocks.ICE) {
+        if (this == Blocks.ICE && SeasonWeather.isValid(level)) {
             if (SeasonWeather.canMelt(level.getBiome(pos).value(), pos, level)) {
                 if (!SnowAndIceEventHandler.getPlacedMeltablesSavedData(level).isManuallyPlaced(pos)) {
                     this.melt(state, level, pos);

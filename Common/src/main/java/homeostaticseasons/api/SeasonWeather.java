@@ -48,7 +48,13 @@ public class SeasonWeather {
     }
 
     public static boolean canFreeze(Biome biome, BlockPos pos, Level level) {
-        return !canMelt(biome, pos, level);
+        if (!isValid(level)) {
+            return false;
+        }
+
+        BiomeTemperature biomeTemperature = getBiomeTemperature(biome, level, pos);
+
+        return !biomeTemperature.isWarmEnoughToMelt();
     }
 
     public static boolean warmEnoughToRain(Biome biome, BlockPos pos, LevelReader levelReader) {
