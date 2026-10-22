@@ -172,6 +172,7 @@ public class ConfigHandler {
         private final WhiteNoiseConfigSpec.LongValue lateWinterDaysLength;
         private final WhiteNoiseConfigSpec.BooleanValue seasonalSnowReplaceVegetation;
         private final WhiteNoiseConfigSpec.IntValue snowAccumulationHeight;
+        private final WhiteNoiseConfigSpec.BooleanValue iceFeature;
 
         Common(WhiteNoiseConfigSpec.Builder builder) {
             builder.push("seasons").comment(getTranslation("seasons"));
@@ -239,6 +240,10 @@ public class ConfigHandler {
             snowAccumulationHeight = builder
                 .comment(getTranslation("snowaccumulationheight"))
                 .defineInRange("snowAccumulationHeight", 1, 1, 8);
+
+            iceFeature = builder
+                .comment(getTranslation("icefeature"))
+                .define("iceFeature", true);
 
             builder.pop(); // weather
         }
@@ -382,6 +387,10 @@ public class ConfigHandler {
 
         public static int snowAccumulationHeight() {
             return COMMON.snowAccumulationHeight.get();
+        }
+
+        public static boolean iceFeature() {
+            return COMMON.iceFeature.get();
         }
 
     }
