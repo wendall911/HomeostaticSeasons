@@ -51,7 +51,7 @@ public abstract class ServerLevelMixin extends Level implements WorldGenLevel {
         BlockPos blockpos1 = blockpos.below();
         Biome biome = this.getBiome(blockpos).value();
 
-        if (SeasonWeather.canFreeze(biome, blockpos1, this.getLevel())) {
+        if (ConfigHandler.Common.iceFeature() && SeasonWeather.canFreeze(biome, blockpos1, this.getLevel())) {
             BlockState blockState = this.getBlockState(blockpos1);
             FluidState fluidState = blockState.getFluidState();
 

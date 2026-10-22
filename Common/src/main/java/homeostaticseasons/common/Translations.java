@@ -79,6 +79,11 @@ public class Translations {
             "The maximum height of snow layers that can accumulate due to seasonal snow.",
             "This effectively sets the gamerule 'snowAccumulationHeight' for seasonal snow."
         ));
+        translations.put("icefeature.title", "Ice Feature");
+        translations.put("icefeature", joiner(
+            "Ice forms in water sources when freezing.",
+            "Ice melts when temperature warms above freezing."
+        ));
     }
 
     public static String get(String key) {
