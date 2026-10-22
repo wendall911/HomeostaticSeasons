@@ -19,6 +19,8 @@
   "homeostaticseasons.configuration.fixedseason.name": "Fixed Season",
   "homeostaticseasons.configuration.hemisphere.description": "The hemisphere in which the seasons progress.\nNorthern: Spring starts in March.\nSouthern: Spring starts in September.",
   "homeostaticseasons.configuration.hemisphere.name": "Hemisphere",
+  "homeostaticseasons.configuration.icefeature.description": "Ice forms in water sources when freezing.\nIce melts when temperature warms above freezing.",
+  "homeostaticseasons.configuration.icefeature.name": "Ice Feature",
   "homeostaticseasons.configuration.lateautumndayslength.description": "The length of Late Autumn subseason in Minecraft days.",
   "homeostaticseasons.configuration.lateautumndayslength.name": "Late Autumn Subseason Length",
   "homeostaticseasons.configuration.latespringdayslength.description": "The length of Late Spring subseason in Minecraft days.",
